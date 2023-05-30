@@ -1,0 +1,189 @@
+@import url("https://fonts.googleapis.com/css2?family=DynaPuff&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.typography-1 {
+  font-family: "DynaPuff", cursive;
+}
+.typography-2 {
+  font-family: "Permanent Marker", cursive;
+}
+
+.shadow-1 {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.shadow-2 {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.shadow-3 {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.opacity-1 {
+  opacity: 0.9;
+}
+
+.sk-cube-grid {
+  width: 100px;
+  height: 100px;
+  margin: 50px auto;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #333;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%,
+  70%,
+  100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%,
+  70%,
+  100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url("./Images/fondo-1.jpg") no-repeat center center;
+  background-size: cover;
+  padding-top: 5rem;
+  padding-bottom: 8rem;
+}
+header.masthead:before {
+  content: "";
+  position: absolute;
+  background-color: #000000;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+header.masthead h1,
+header.masthead .h1 {
+  font-size: 2rem;
+}
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 5rem;
+    padding-bottom: 8rem;
+  }
+  header.masthead h1,
+  header.masthead .h1 {
+    font-size: 3rem;
+  }
+}
+
+section.resume-section {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  max-width: 75rem;
+}
+section.resume-section .resume-section-content {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  section.resume-section {
+    max-height: 100vh;
+  }
+}
+@media (min-width: 992px) {
+  section.resume-section {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.subheading {
+  font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.dev-icons {
+  font-size: 3rem;
+}
