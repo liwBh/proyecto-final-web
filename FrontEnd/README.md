@@ -28,6 +28,22 @@
 * URL: https://sweetalert2.github.io/
 * Comandos:
    - ```npm install sweetalert2```
+
+### Animates CSS
+* URL: https://animate.style/
+* Comandos:
+   - ```npm install animate.css --save```
+   
 ### API 
 * COCKTAIL DB
 * URL: https://www.thecocktaildb.com/api.php
+
+### Dropzone
+* URL: https://react-dropzone.js.org/
+* Comandos:
+   - ```npm install react-dropzone --save```
+
+### React UUID
+* URL: https://www.npmjs.com/package/uuid
+* Comandos:
+   - ```npm i uuid``
