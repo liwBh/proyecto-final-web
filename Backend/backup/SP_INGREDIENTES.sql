@@ -74,62 +74,23 @@ END
 
 
 ---------------------------------------------------------------------
-CREATE PROCEDURE dbo.SP_OBTENER_INGREDIENTE_POR_ID
-(
-	@INGREDIENTEID bigint,
-	@INGREDIENTE TABLE (
-		ingredienteid bigint,
-		ingredientenombre nvarchar(50)
-	),
-	@ERROR_ID int output,
-	@ERROR_DESCRIPCION nvarchar(max) output
-)
+CREATE PROCEDURE SP_OBTENER_INGREDIENTE_ID
+    @Id bigint
 AS
 BEGIN
-	BEGIN TRY
-		INSERT INTO @INGREDIENTE
-		SELECT ingredienteid, ingredientenombre
-		FROM tbingrediente
-		WHERE ingredienteid = @INGREDIENTEID;
-
-		SET @ERROR_ID = 0;
-		SET @ERROR_DESCRIPCION = '';
-	END TRY
-	
-	BEGIN CATCH
-		SET @ERROR_ID = ERROR_NUMBER();
-		SET @ERROR_DESCRIPCION = ERROR_MESSAGE();
-	END CATCH
+    SELECT *
+    FROM tbingrediente
+    WHERE ingredienteid = @Id;
 END
 
 
 ---------------------------------------------------------------------
-CREATE PROCEDURE dbo.SP_OBTENER_TODOS_LOS_INGREDIENTES
-(
-	@INGREDIENT
-
-ES TABLE (
-		ingredienteid bigint,
-		ingredientenombre nvarchar(50)
-	),
-	@ERROR_ID int output,
-	@ERROR_DESCRIPCION nvarchar(max) output
-)
+CREATE PROCEDURE SP_OBTENER_INGREDIENTES
 AS
 BEGIN
-	BEGIN TRY
-		INSERT INTO @INGREDIENTES
-		SELECT ingredienteid, ingredientenombre
-		FROM tbingrediente;
-
-		SET @ERROR_ID = 0;
-		SET @ERROR_DESCRIPCION = '';
-	END TRY
-	
-	BEGIN CATCH
-		SET @ERROR_ID = ERROR_NUMBER();
-		SET @ERROR_DESCRIPCION = ERROR_MESSAGE();
-	END CATCH
+    SELECT *
+    FROM tbingrediente;
 END
+
 ---------------------------------------------------------------------
 
