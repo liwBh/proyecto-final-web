@@ -75,3 +75,27 @@ END
 GO
 
 ---------------------------------------------------------------------------------------
+
+CREATE PROCEDURE [dbo].[SP_VERIFICAR_FAVORITO]
+    @usuarioid bigint,
+    @bebidaid bigint,
+    @IsFavorite int OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM tbfavorito
+        WHERE favoritousuarioid = @usuarioid
+            AND favoritobebidaid = @bebidaid
+    )
+    BEGIN
+       
+        SET @IsFavorite = 1;
+    END
+    ELSE
+    BEGIN    
+        SET @IsFavorite = 0;
+    END
+END

@@ -5,7 +5,7 @@ CREATE PROCEDURE dbo.SP_INGRESAR_USUARIO
 	@CORREO_ELECTRONICO nvarchar(max),
 	@PASSWORD nvarchar(max),
 	@NUMERO_VERIFICACION nvarchar(max),
-	@ID_RETURN bigint output,
+	@ID_RETURN int output,
 	@ERROR_ID int output,
 	@ERROR_DESCRIPCION nvarchar(max) output
 )
