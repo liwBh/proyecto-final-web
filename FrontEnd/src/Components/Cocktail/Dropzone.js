@@ -124,7 +124,7 @@ const Dropzone = ({ setMeCocktail, meCocktail }) => {
 
   return (
     <>
-      <div className="container mt-5">
+      <div className="container mt-2">
         {/* input del dropzone */}
         <div {...getRootProps({ style })}>
           <input {...getInputProps()} />
@@ -142,6 +142,9 @@ const Dropzone = ({ setMeCocktail, meCocktail }) => {
         <div className="d-flex justify-content-center align-items-center mt-3">
           {image}
         </div>
+
+
+
       </div>
     </>
   );
