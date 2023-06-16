@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../Components/Layout";
 import Dropzone from "../Components/Cocktail/Dropzone";
 import { FaCocktail } from "react-icons/fa";
@@ -9,8 +9,12 @@ import {
   contentAlcoholic,
   glassName,
   ingredientsList,
+  measureQuantitys,
 } from "../Assets/DataPages";
-import { regexMesure } from "../Assets/ExpresionRegular";
+
+import {
+  regexNumberAndLetter,
+} from "../Assets/ExpresionRegular";
 
 import { CgDanger } from "react-icons/cg";
 import { BiSave } from "react-icons/bi";
@@ -33,45 +37,112 @@ const Cocktail = () => {
   const [measureType, setMeasureType] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [indexList, setIndexList] = useState(null);
+
   const [error, setError] = useState({
     id: 0,
     status: false,
     message: "",
   });
 
-  /* const [error, setError] = useState(0); */
+  const handleValidateItem = () => {
+    //validacion de cantidad de tipo
+    if (measureType.trim() === "") {
+      showErroAlert("The measure type is required", 5);
+      return true;
+    }
+    //validacion de cantidad de medida
+    if (
+      measureQuantity.trim() === "" &&
+      measureType.trim() !== "To your liking"
+    ) {
+      showErroAlert("The measure quantity is required", 4);
+      return true;
+    }
 
-  useEffect(() => {
-    /* console.log(meCocktail); */
-  }, [meCocktail]);
+    //validacion de medidas maximo 14
+    if (meCocktail.measures.length === 14) {
+      showErroAlert("The measure maximum is 14", 5);
+      return true;
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    //validacion de cantidad de tipo
+    if (ingredient.trim() === "") {
+      showErroAlert("The ingredient is required", 9);
+      return true;
+    }
 
+    return false;
+  };
+
+  const handleValidateSubmit = () => {  
     if (meCocktail.name.trim() === "") {
       showErroAlert("The name is required", 1);
-      return;
+      return true;
+    }
+
+    if (meCocktail.alcoholic.trim() === "") {
+      showErroAlert("The content alcoholic is required", 6);
+      return true;
+    }
+
+    if (meCocktail.category.trim() === "") {
+      showErroAlert("The category is required", 7);
+      return true;
+    }
+
+    if (meCocktail.glass.trim() === "") {
+      showErroAlert("The type glass is required", 8);
+      return true;
     }
 
     if (meCocktail.image === null) {
       showErroAlert("The image is required", 2);
-      return;
+      return true;
     }
 
     if (meCocktail.preparation.trim() === "") {
       showErroAlert("The preparation is required", 3);
-      return;
+      return true;
     }
 
-    if (meCocktail.measures.length === 0) {
-      showErroAlert("The measures is required", 4);
-      return;
+    if (meCocktail.ingredients.length === 0 || meCocktail.measures.length === 0) {
+      showErroAlert("The ingredients and measures is required", 4);
+      return true;
     }
 
-    if (meCocktail.ingredients.length === 0) {
-      showErroAlert("The ingredients is required", 1);
-      return;
+    return false;
+  }
+
+  const handleInput = (e) => {
+
+    if (e.target.name === "name") { 
+      if (!regexNumberAndLetter.test(e.target.value)) {
+        showErroAlert("Only letters and numbers", 1);
+        e.target.value = e.target.value.slice(0, -1);
+      }
     }
+
+    if(e.target.name === "preparation") {
+      if (!regexNumberAndLetter.test(e.target.value)) {
+        showErroAlert("Only letters and numbers", 1);
+        e.target.value = e.target.value.slice(0, -1);
+      }
+    }
+    
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //validacion de campos
+    if(handleValidateSubmit()){
+      return; 
+    }
+
+    console.log(meCocktail);
+
+    //se envia el objeto al backend
+
   };
 
   const handleChange = (e) => {
@@ -81,52 +152,31 @@ const Cocktail = () => {
     });
   };
 
-  const handleAddMeasure = (e) => {
-    //se valida que los campos no esten vacios
-
-    //validacion de cantidad de medida
-    if (
-      measureQuantity.trim() === "" &&
-      measureType.trim() !== "To your liking"
-    ) {
-      showErroAlert("The measure quantity is required", 4);
-      return;
-    }
-    //validacion de cantidad de medida
-    if (
-      (measureQuantity.trim() <= 0 || measureQuantity > 100) &&
-      measureType.trim() !== "To your liking"
-    ) {
-      showErroAlert("must be greater than 0 and less than 100", 4);
-      return;
-    }
-
-    //validacion de cantidad de tipo
-    if (measureType.trim() === "") {
-      showErroAlert("The measure type is required", 5);
-
-      return;
-    }
-
-    //validacion de medidas maximo 14
-    if (meCocktail.measures.length === 14) {
-      showErroAlert("The measure maximum is 14", 5);
+  const handleAddItem = (e) => {
+    //validacion de campos
+    if (handleValidateItem()) {
       return;
     }
 
     //se agrega la medida al array de medidas
+    const newMeasure =
+      measureQuantity === ""
+        ? `${measureType}`
+        : `${measureQuantity} ${measureType}`;
+
     setMeCocktail({
       ...meCocktail,
-      measures: [...meCocktail.measures, `${measureQuantity} ${measureType}`],
+      measures: [...meCocktail.measures, newMeasure],
+      ingredients: [...meCocktail.ingredients, ingredient],
     });
 
     //se limpian los campos
     setMeasureQuantity("");
     setMeasureType("");
+    setIngredient("");
   };
 
   const showErroAlert = (message, id) => {
-    console.log("entro");
     setError({
       id: id,
       status: true,
@@ -142,29 +192,65 @@ const Cocktail = () => {
     }, 1500);
   };
 
-  const handleDeleteMeasure = (index) => {
+  const handleDeleteItem = (index) => {
     const newMeasures = meCocktail.measures.filter((measure, i) => i !== index);
-    setMeCocktail({ ...meCocktail, measures: newMeasures });
+    const newIngredients = meCocktail.ingredients.filter(
+      (ingredient, i) => i !== index
+    );
+
+    setMeCocktail({
+      ...meCocktail,
+      measures: newMeasures,
+      ingredients: newIngredients,
+    });
   };
 
-  const hadleEditMeasure = (index) => {
-    const text1 = meCocktail.measures[index].split(" ")[0];
-    const text2 = meCocktail.measures[index].substring(`${text1}`.length + 1);
-    setMeasureQuantity(text1);
-    setMeasureType(text2);
+  const hadleEditItem = (index) => {
+    if (meCocktail.measures[index] !== "To your liking") {
+      //si tiene una cantidad de medida
+      const text1 = meCocktail.measures[index].split(" ")[0];
+      const text2 = meCocktail.measures[index].substring(`${text1}`.length + 1);
+      setMeasureQuantity(text1);
+      setMeasureType(text2);
+    } else {
+      //no tiene cantidadd de medida, es al gusto
+      setMeasureQuantity("");
+      setMeasureType(meCocktail.measures[index]);
+    }
+
+    setIngredient(meCocktail.ingredients[index]);
 
     setIndexList(index);
   };
 
-  const handleUpdateMeasure = () => {
+  const handleUpdateItem = () => {
+    //validacion de campos
+    if (handleValidateItem()) {
+      return;
+    }
+
+    //actualizar el array de medidas
     const newMeasures = meCocktail.measures;
-    newMeasures[indexList] = `${measureQuantity} ${measureType}`;
-    setMeCocktail({ ...meCocktail, measures: newMeasures });
+    newMeasures[indexList] =
+      measureType === "To your liking"
+        ? measureType
+        : `${measureQuantity} ${measureType}`;
+
+    //actualizar el array de ingredientes
+    const newIngredients = meCocktail.ingredients;
+    newIngredients[indexList] = ingredient;
+
+    setMeCocktail({
+      ...meCocktail,
+      measures: newMeasures,
+      ingredients: newIngredients,
+    });
 
     //reseteo de campos
     setIndexList(null);
     setMeasureQuantity("");
     setMeasureType("");
+    setIngredient("");
   };
 
   const errorAlert = (
@@ -186,6 +272,8 @@ const Cocktail = () => {
             <div className="row">
               {/* input - select */}
               <div className="col-12 col-md-6">
+
+                {/* name */}
                 <div className="mb-3 mt-4">
                   <label
                     htmlFor="name"
@@ -200,6 +288,7 @@ const Cocktail = () => {
                     name="name"
                     value={meCocktail.name}
                     onChange={handleChange}
+                    onInput={ (e) => handleInput(e)}
                   />
 
                   {/* MENSAJE Validacion*/}
@@ -231,7 +320,7 @@ const Cocktail = () => {
                   </select>
 
                   {/* MENSAJE Validacion*/}
-                  {error.id === 7 && errorAlert}
+                  {error.id === 6 && errorAlert}
                 </div>
 
                 {/* Category */}
@@ -259,7 +348,7 @@ const Cocktail = () => {
                   </select>
 
                   {/* MENSAJE Validacion*/}
-                  {error.id === 8 && errorAlert}
+                  {error.id === 7 && errorAlert}
                 </div>
 
                 {/* Glass */}
@@ -300,18 +389,29 @@ const Cocktail = () => {
                   </label>
 
                   <div className="row" id="measure">
-                    <div className="col-5">
-                      <input
-                        type="number"
-                        className="form-control"
+                    <div className="col-6">
+                      <select
+                        className="form-select"
+                        aria-label="Measure Quantity"
                         name="measureQuantity"
                         value={measureQuantity}
                         onChange={(e) => setMeasureQuantity(e.target.value)}
-                      />
+                      >
+                        <option value={""}>Select measure quantity</option>
+                        <option value={"1/2"}>1/2</option>
+                        <option value={"1/3"}>1/3</option>
+                        <option value={"1/4"}>1/4</option>
+
+                        {measureQuantitys.map((number) => (
+                          <option key={number} value={number}>
+                            {number}
+                          </option>
+                        ))}
+                      </select>
                       {/* MENSAJE Validacion*/}
                       {error.id === 4 && errorAlert}
                     </div>
-                    <div className="col-5">
+                    <div className="col-6">
                       <select
                         className="form-select"
                         aria-label="Measure type"
@@ -329,19 +429,6 @@ const Cocktail = () => {
 
                       {/* MENSAJE Validacion*/}
                       {error.id === 5 && errorAlert}
-                    </div>
-                    <div className="col-2">
-                      <button
-                        type="button"
-                        className="btn btn-lg btn-light d-flex justify-content-center align-content-center"
-                        onClick={
-                          indexList !== null
-                            ? handleUpdateMeasure
-                            : handleAddMeasure
-                        }
-                      >
-                        {indexList !== null ? <VscSaveAs /> : <BiPlusMedical />}
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -364,7 +451,7 @@ const Cocktail = () => {
                         value={ingredient}
                         onChange={(e) => setIngredient(e.target.value)}
                       >
-                        <option value={""}>Select </option>
+                        <option value={""}>Select ingredient</option>
                         {ingredientsList.map((ingredient, index) => (
                           <option key={index} value={ingredient}>
                             {ingredient}
@@ -380,9 +467,7 @@ const Cocktail = () => {
                         type="button"
                         className="btn btn-lg btn-light d-flex justify-content-center align-content-center"
                         onClick={
-                          indexList !== null
-                            ? handleUpdateMeasure
-                            : handleAddMeasure
+                          indexList !== null ? handleUpdateItem : handleAddItem
                         }
                       >
                         {indexList !== null ? <VscSaveAs /> : <BiPlusMedical />}
@@ -405,26 +490,26 @@ const Cocktail = () => {
                               {index + 1}.
                             </span>
                           </div>
-                          <div className="col-6 ">{measure}</div>
-                          <div className="col-2 d-flex justify-content-center">
+                          <div className="col-4">{measure}</div>
+                          <div className="col-4">
+                            {meCocktail.ingredients[index]}
+                          </div>
+                          <div className="col-1 d-flex justify-content-center">
                             <AiFillEdit
                               className="ms-2"
-                              onClick={() => hadleEditMeasure(index)}
+                              onClick={() => hadleEditItem(index)}
                             />
                           </div>
-                          <div className="col-2 d-flex justify-content-center">
+                          <div className="col-1 d-flex justify-content-center">
                             <AiFillDelete
                               className="ms-2"
-                              onClick={() => handleDeleteMeasure(index)}
+                              onClick={() => handleDeleteItem(index)}
                             />
                           </div>
                         </div>
                       </li>
                     ))}
                   </ul>
-
-                  {/* MENSAJE Validacion*/}
-                  {error.id === 6 && errorAlert}
                 </div>
               </div>
 
@@ -462,11 +547,14 @@ const Cocktail = () => {
                     name="preparation"
                     value={meCocktail.preparation}
                     onChange={handleChange}
+                    onInput={ (e) => handleInput(e)}
                   ></textarea>
+                  {error.id === 3 && errorAlert}
                 </div>
               </div>
             </div>
 
+            {/* button send */}
             <div className="d-flex justify-content-center align-items-center">
               <button
                 type="submit"

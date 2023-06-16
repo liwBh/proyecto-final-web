@@ -3,6 +3,8 @@ import Layout from "../Components/Layout";
 import { BiLock } from "react-icons/bi";
 import { FiMail } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { CgDanger } from "react-icons/cg";
+import { regexEmail } from "../Assets/ExpresionRegular";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +12,57 @@ const Login = () => {
     password: "",
   });
 
+  const [error, setError] = useState({
+    id: 0,
+    status: false,
+    message: "",
+  });
+
   const { email, password } = formData;
+
+  const handleValidation = (e) => {
+
+    if (email.trim() === "") {
+      showErroAlert("The email is required", 1);
+      return true;
+    }
+
+    if (!regexEmail.test(email)) {
+      showErroAlert("The email is invalid", 1);
+      return true;
+    }
+
+    if (password.trim() === "") {
+      showErroAlert("The password is required", 2);
+      return true;
+    }
+
+    if (password.trim().length < 8 || password.trim().length > 16) {
+      showErroAlert(
+        "The password must be a minimum of 8 and a maximum of 16 characters",
+        2
+      );
+      return true;
+    }
+
+    return false;
+  };
+
+  const showErroAlert = (message, id) => {
+    setError({
+      id: id,
+      status: true,
+      message: message,
+    });
+
+    setTimeout(() => {
+      setError({
+        id: 0,
+        status: false,
+        message: "",
+      });
+    }, 1500);
+  };
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,7 +70,21 @@ const Login = () => {
 
   const handleSubmmit = (e) => {
     e.preventDefault();
+
+    //validacion de formulario
+    if (handleValidation()) {
+      return;
+    }
+
+    //enviar datos al servidor
+    console.log(formData);
   };
+
+  const errorAlert = (
+    <div className="text-danger my-2">
+      {error.message} <CgDanger className="text-danger" />
+    </div>
+  );
 
   return (
     <>
@@ -38,7 +104,7 @@ const Login = () => {
                 <div className="input-container">
                   <div className="input-wrapper">
                     <input
-                      type="email"
+                      type="text"
                       className="input-field"
                       id="email"
                       name="email"
@@ -59,6 +125,9 @@ const Login = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+
+                {/* MENSAJE Validacion*/}
+                {error.id === 1 && errorAlert}
               </div>
 
               {/* password */}
@@ -87,6 +156,9 @@ const Login = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+
+                {/* MENSAJE Validacion*/}
+                {error.id === 2 && errorAlert}
               </div>
 
               {/* Button */}
@@ -103,12 +175,12 @@ const Login = () => {
                   Sign Up
                 </Link>
               </div>
-              
+
               {/* Link */}
               <div className="d-flex justify-content-center align-items-center mb-3">
                 <Link to="/forgot" className="text-decoration-none">
                   <span className="text-muted">Already have an account? </span>
-                  Forgot Password 
+                  Forgot Password
                 </Link>
               </div>
             </form>

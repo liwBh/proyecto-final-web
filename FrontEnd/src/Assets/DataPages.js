@@ -170,10 +170,21 @@ const glassName = [
   "Coupe Glass",
 ];
 
+const setMeasureQuantitys =()=>{
+  const measureQuantitys = [];
+  for (let i = 1; i < 101; i++) {
+    measureQuantitys.push(i);
+  }
+  return measureQuantitys;
+}
+
+const measureQuantitys = setMeasureQuantitys();
+
 export {
   cocktailMeasures,
   categories,
   contentAlcoholic,
   ingredientsList,
   glassName,
+  measureQuantitys
 }

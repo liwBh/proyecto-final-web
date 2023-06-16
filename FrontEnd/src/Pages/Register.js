@@ -4,8 +4,23 @@ import { BiLock } from "react-icons/bi";
 import { FiMail } from "react-icons/fi";
 import { FaUser, FaUserFriends } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { CgDanger } from "react-icons/cg";
+import { regexEmail, regexLetter } from "../Assets/ExpresionRegular";
+
+import {
+  createUser,
+} from "../Redux/Users/UsersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Components/Spinner";
+import { SweetAlertError, SweetAlertSuccessRedux } from "../SweetAlert/SweetAlert";
 
 const Register = () => {
+
+  const { loading, message, errorRedux } = useSelector((state) => ({
+    ...state.users,
+  }));
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
@@ -13,6 +28,97 @@ const Register = () => {
     password: "",
     passwordConfirm: "",
   });
+
+  const [error, setError] = useState({
+    id: 0,
+    status: false,
+    message: "",
+  });
+
+  const errorAlert = (
+    <div className="text-danger my-2">
+      {error.message} <CgDanger className="text-danger" />
+    </div>
+  );
+
+  const showErroAlert = (message, id) => {
+    setError({
+      id: id,
+      status: true,
+      message: message,
+    });
+
+    setTimeout(() => {
+      setError({
+        id: 0,
+        status: false,
+        message: "",
+      });
+    }, 1500);
+  };
+
+  const handleInput = (e) => {
+    if (e.target.name === "name") {
+      if (!regexLetter.test(e.target.value )) {
+        showErroAlert("Invalid character removed", 1);
+        e.target.value = e.target.value.slice(0, -1);
+      }
+    }
+
+    if (e.target.name === "lastName") {
+      if (!regexLetter.test(e.target.value )) {
+        showErroAlert("Invalid character removed", 2);
+        e.target.value = e.target.value.slice(0, -1);
+      }
+    }
+  };
+
+  const handleValidation = (e) => {
+    if (name.trim() === "") {
+      showErroAlert("The name is required", 1);
+      return true;
+    }
+
+    if (lastName.trim() === "") {
+      showErroAlert("The last name is required", 2);
+      return true;
+    }
+
+    if (email.trim() === "") {
+      showErroAlert("The email is required", 3);
+      return true;
+    }
+
+    if (!regexEmail.test(email)) {
+      showErroAlert("The email is invalid", 3);
+      return true;
+    }
+
+    if (password.trim() === "") {
+      showErroAlert("The password is required", 4);
+      return true;
+    }
+
+    if (password.trim().length < 8 || password.trim().length > 16) {
+      showErroAlert(
+        "The password must be a minimum of 8 and a maximum of 16 characters",
+        4
+      );
+      return true;
+    }
+
+    if (passwordConfirm.trim() === "") {
+      showErroAlert("The password confirm is required", 5);
+      return true;
+    }
+
+    if (passwordConfirm.trim() !== password.trim()) {
+      showErroAlert("The password confirm is not equal to password", 5);
+      return true;
+    }
+
+    return false;
+  };
 
   const { name, lastName, email, password, passwordConfirm } = formData;
 
@@ -22,7 +128,39 @@ const Register = () => {
 
   const handleSubmmit = (e) => {
     e.preventDefault();
+
+    //validacion de campos
+    if (handleValidation()) {
+      return;
+    }
+
+    //enviar datos al servidor
+    //console.log(formData);
+    //objeto esperado en el backend
+
+    //peticion a backend
+    dispatch(createUser({ data: formData }));
+
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+    }
   };
+
+  if (loading) {
+    return (
+      <>
+        <Layout>
+          <Spinner />
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>
@@ -48,6 +186,7 @@ const Register = () => {
                       name="name"
                       value={name}
                       onChange={handleOnChange}
+                      onInput={handleInput}
                     />
                     <label
                       htmlFor="name"
@@ -63,6 +202,8 @@ const Register = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+                {/* MENSAJE Validacion*/}
+                {error.id === 1 && errorAlert}
               </div>
 
               {/* lastName */}
@@ -76,6 +217,7 @@ const Register = () => {
                       name="lastName"
                       value={lastName}
                       onChange={handleOnChange}
+                      onInput={handleInput}
                     />
                     <label
                       htmlFor="lastName"
@@ -91,6 +233,8 @@ const Register = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+                {/* MENSAJE Validacion*/}
+                {error.id === 2 && errorAlert}
               </div>
 
               {/* Email */}
@@ -119,6 +263,8 @@ const Register = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+                {/* MENSAJE Validacion*/}
+                {error.id === 3 && errorAlert}
               </div>
 
               {/* password */}
@@ -147,6 +293,8 @@ const Register = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+                {/* MENSAJE Validacion*/}
+                {error.id === 4 && errorAlert}
               </div>
 
               {/* password Confirm */}
@@ -175,6 +323,8 @@ const Register = () => {
                     <div className="input-line"></div>
                   </div>
                 </div>
+                {/* MENSAJE Validacion*/}
+                {error.id === 5 && errorAlert}
               </div>
 
               {/* Button */}

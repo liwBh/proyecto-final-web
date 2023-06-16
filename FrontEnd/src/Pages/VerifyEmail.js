@@ -1,11 +1,14 @@
 import React,{useEffect, useState} from "react";
 import Logo2 from "../Images/logo-2.png";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
 
   const [shadow, setShadow] = useState("shadow-1");
   const [animate, setAnimate] = useState("");
+
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleShadow = () => {  
     setTimeout(() => { 
@@ -17,6 +20,15 @@ const VerifyEmail = () => {
   useEffect(() => { 
     handleShadow();
   }, [shadow, animate]);
+
+  const handleVeryfyEmail = () => {
+    //redireccionar al Login
+    navigate("/login");
+
+    //realizar la peticion al servidor
+    console.log(id);
+
+  }
 
   return (
     <div className="bg-dark h-100">
@@ -53,12 +65,13 @@ const VerifyEmail = () => {
             Click on the following link to log in and access
                our complete letter:
             </p>
-            <Link
-              to="/login"
+            <button
+              type="button"
               className={`btn btn-dark btn-lg mt-3 ${animate}`}
+              onClick={handleVeryfyEmail}
             >
               Sing In
-            </Link>
+            </button>
           </div>
         </div>
       </div>
