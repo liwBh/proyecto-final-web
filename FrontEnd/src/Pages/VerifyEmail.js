@@ -1,34 +1,67 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Logo2 from "../Images/logo-2.png";
 import { useParams, useNavigate } from "react-router-dom";
+import { activateUser } from "../Redux/Auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SweetAlertError,
+  SweetAlertSuccessRedux,
+} from "../SweetAlert/SweetAlert";
 
 const VerifyEmail = () => {
+  const { message, errorRedux } = useSelector((state) => ({
+    ...state.auth,
+  }));
+  const dispatch = useDispatch();
 
   const [shadow, setShadow] = useState("shadow-1");
   const [animate, setAnimate] = useState("");
 
-  const { id } = useParams();
+  const { u, c } = useParams();
   const navigate = useNavigate();
 
-  const handleShadow = () => {  
-    setTimeout(() => { 
+  const handleShadow = () => {
+    setTimeout(() => {
       setShadow("");
       setAnimate("animate_animated animate__heartBeat");
-     }, 1500);
+    }, 1500);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     handleShadow();
   }, [shadow, animate]);
 
   const handleVeryfyEmail = () => {
-    //redireccionar al Login
-    navigate("/login");
-
     //realizar la peticion al servidor
-    console.log(id);
 
-  }
+    const data = {
+      email: u,
+      activationNumber: c,
+    }
+    console.log(data)
+    dispatch(
+      activateUser({data})
+    );
+  };
+
+  useEffect(() => {
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+
+      //redireccionar al Login
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
+
+    // eslint-disable-next-line
+  }, [errorRedux, message]);
 
   return (
     <div className="bg-dark h-100">
@@ -36,9 +69,7 @@ const VerifyEmail = () => {
         <div className="row">
           <div className="col-12 text-center mt-5">
             <h2>Welcome to the Web Bar</h2>
-            <p className="lead">
-            Enjoy our selection of delicious drinks!
-            </p>
+            <p className="lead">Enjoy our selection of delicious drinks!</p>
           </div>
         </div>
 
@@ -58,12 +89,12 @@ const VerifyEmail = () => {
           <div className="col-12 text-center mt-5">
             <h3>Explore our options</h3>
             <p>
-            Here you will find a wide variety of cocktails to satisfy
-               your tastes.
+              Here you will find a wide variety of cocktails to satisfy your
+              tastes.
             </p>
             <p>
-            Click on the following link to log in and access
-               our complete letter:
+              Click on the following link to log in and access our complete
+              letter:
             </p>
             <button
               type="button"

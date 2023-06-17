@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  
+
   async ({ data }) => {
-    const response = await fetch('https://www.', {
-      method: 'POST',
+    const response = await fetch("https://www.", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -19,28 +18,39 @@ export const loginUser = createAsyncThunk(
 
 export const activateUser = createAsyncThunk(
   "auth/activateUser",
-  
+
   async ({ data }) => {
-    const response = await fetch('https://www.', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+
+    console.log(data);
+    const response = await fetch(
+      "https://localhost:44328/api/Usuario/activarUsuario",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          correoElectronico: data.email,
+          numeroDeActivacion: data.activationNumber,
+        }),
+      }
+    );
 
     return response.json();
   }
 );
 
+//http://localhost:3000/verify-email/a/b
+//https://localhost:3000/verify-email/liwbarqueroh@gmail.com/5sGLFBnziCIulWhVZt4MkA
+
 export const recoveryPasswordUser = createAsyncThunk(
   "auth/recoveryPasswordUser",
-  
+
   async ({ data }) => {
-    const response = await fetch('https://www.', {
-      method: 'POST',
+    const response = await fetch("https://www.", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -57,14 +67,11 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
-    urlActivation: "",
     message: "",
     loading: false,
     errorRedux: null,
   },
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: {
     //login
     [loginUser.pending]: (state, action) => {
@@ -80,19 +87,31 @@ const authSlice = createSlice({
     },
 
     //activar cuenta de usuario
-    [loginUser.pending]: (state, action) => {
+    [activateUser.pending]: (state, action) => {
       state.loading = true;
+      state.errorRedux = null;
+      state.message = "";
     },
-    [loginUser.fulfilled]: (state, action) => {
+    [activateUser.fulfilled]: (state, action) => {
+
+      console.log(action.payload)
+      
+      if (action.payload.result) {
+        //si no hay errores
+        state.message = "Account activated successfully";
+      }
+
+      if (action.payload.errors > 0 || !action.payload.result) {//si hay errores
+        state.errorRedux = "Account activation failed";
+      }
+
       state.loading = false;
-      state.urlActivation = action.payload.urlActivation;
     },
-    [loginUser.rejected]: (state, action) => {
+    [activateUser.rejected]: (state, action) => {
       state.loading = false;
-      state.errorRedux = action.error.message;
+      state.errorRedux = "Account activation failed";
     },
 
-    
     //recuperar contraseña de usuario
     [recoveryPasswordUser.pending]: (state, action) => {
       state.loading = true;
@@ -105,10 +124,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.errorRedux = action.error.message;
     },
-
-  }
-
-  }
-);
+  },
+});
 
 export default authSlice.reducer;

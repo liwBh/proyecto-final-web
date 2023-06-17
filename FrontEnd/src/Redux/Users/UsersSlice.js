@@ -4,15 +4,26 @@ export const createUser = createAsyncThunk(
   "users/createUser",
 
   async ({ data }) => {
-    const response = await fetch("https://www.", {
+    const response = await fetch("https://localhost:44328/api/Usuario/ingresarUsuario", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(
+        {
+          elUsuario: {
+            nombre: data.name,
+            apellidos: data.lastName,
+            correoElectronico: data.email,
+            password: data.password,
+          }
+        
+        }
+      ),
     });
 
-    return response.json();
+
+    return  response.json();
   }
 );
 
@@ -28,19 +39,32 @@ const usersSlice = createSlice({
     loading: false,
     errorRedux: null,
   },
-  reducers: {},
+  reducers: {
+  },
   extraReducers: {
     //consulta para registrar usuario
     [createUser.pending]: (state, action) => {
       state.loading = true;
     },
     [createUser.fulfilled]: (state, action) => {
+
+      if(action.payload.result){//si no hay errores
+        state.message = "Sing Up Succesfully";
+      }else{
+        let error = "";
+        if( action.payload.errors[0] === "ERROR DESDE BD: CORREO YA REGISTRADO"){
+          error = "The mail has already been registered";
+        }else{
+          error = "Failed to register account";
+        }
+        state.errorRedux = error;
+      }
+
       state.loading = false;
-      state.message = "Sing Up Succesfully";
     },
     [createUser.rejected]: (state, action) => {
       state.loading = false;
-      state.errorRedux = action.error.message;
+      state.errorRedux = "Failed to register account";
     },
   },
 });

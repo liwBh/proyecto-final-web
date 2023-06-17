@@ -35,7 +35,7 @@ function App() {
         <Route path="/forgot" element={<Forgot/>} />
         <Route path="/list-cocktails" element={<Coktails/>} />
         <Route path="/cocktail" element={<Cocktail/>} />
-        <Route path="/verify-email/:id" element={<VerifyEmail/>} />
+        <Route path="/verify-email/:u/:c" element={<VerifyEmail/>} />
         <Route path="/profile" element={<Profile/>} />
 
         {/* protected route */}
