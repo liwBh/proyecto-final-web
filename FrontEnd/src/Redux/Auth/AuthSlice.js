@@ -4,23 +4,66 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
 
   async ({ data }) => {
-    const response = await fetch("https://www.", {
+    console.log(data);
+    const response = await fetch("https://localhost:44328/api/Usuario/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        elUsuario: {
+          correoElectronico: data.email,
+          password: data.password,
+        },
+      }),
     });
 
     return response.json();
   }
 );
 
+export const loginOutUser = createAsyncThunk("auth/loginOutUser", () => {
+  //eliminar datos del localsotrage
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+
+  return {
+    user: null,
+    message: "Closing the session",
+    loading: false,
+    errorRedux: null,
+    token: null,
+  };
+});
+
+export const clearState = createAsyncThunk("auth/clearState", () => {
+  return {
+    message: "",
+    loading: false,
+    errorRedux: null,
+  };
+});
+
+export const getLocalStorage = createAsyncThunk("auth/getLocalStorage", () => {
+ 
+  // Obtener la cadena de texto del Local Storage
+  const objetoString = localStorage.getItem("user");
+  const tokenString = localStorage.getItem("token");
+
+  // Convertir la cadena de texto a un objeto utilizando JSON.parse
+  const objetoRecuperado = JSON.parse(objetoString);
+
+
+  return {
+    user: objetoRecuperado,
+    token: tokenString,
+  };
+});
+
 export const activateUser = createAsyncThunk(
   "auth/activateUser",
 
   async ({ data }) => {
-
     console.log(data);
     const response = await fetch(
       "https://localhost:44328/api/Usuario/activarUsuario",
@@ -39,9 +82,6 @@ export const activateUser = createAsyncThunk(
     return response.json();
   }
 );
-
-//http://localhost:3000/verify-email/a/b
-//https://localhost:3000/verify-email/liwbarqueroh@gmail.com/5sGLFBnziCIulWhVZt4MkA
 
 export const recoveryPasswordUser = createAsyncThunk(
   "auth/recoveryPasswordUser",
@@ -66,24 +106,68 @@ export const recoveryPasswordUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: {},
+    user: null,
     message: "",
     loading: false,
     errorRedux: null,
+    token: null,
   },
   reducers: {},
   extraReducers: {
     //login
     [loginUser.pending]: (state, action) => {
       state.loading = true;
+      state.errorRedux = null;
+      state.message = "";
     },
     [loginUser.fulfilled]: (state, action) => {
+      if (action.payload.result) {//si no hay errores
+
+        // Convertir el objeto a una cadena de texto utilizando JSON.stringify
+        const objetoString  = JSON.stringify(action.payload.elUsuario);
+        // Almacenar el objeto en el Local Storage
+        localStorage.setItem("user", objetoString);
+        localStorage.setItem("token", action.payload.session);
+
+        //manejo del state
+        state.message = "Logging in";
+        console.log(action.payload);
+        state.user = action.payload.elUsuario;
+        state.token = action.payload.session;
+      }
+
+      if (action.payload.errors > 0 || !action.payload.result) {
+        //si hay errores
+        state.errorRedux = "Failed to login";
+      }
+
       state.loading = false;
-      state.user = action.payload.user;
     },
     [loginUser.rejected]: (state, action) => {
       state.loading = false;
-      state.errorRedux = action.error.message;
+      state.errorRedux = "Failed to login";
+    },
+
+    //cerrar sesion
+    [loginOutUser.fulfilled]: (state, action) => {
+      state.loading = action.payload.loading;
+      state.errorRedux = action.payload.errorRedux;
+      state.message = action.payload.message;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+    },
+
+    //resetear state
+    [clearState.fulfilled]: (state, action) => {
+      state.loading = action.payload.loading;
+      state.errorRedux = action.payload.errorRedux;
+      state.message = action.payload.message;
+    },
+
+    //perseverancia de los datos del usuario
+    [getLocalStorage.fulfilled]: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
 
     //activar cuenta de usuario
@@ -93,15 +177,13 @@ const authSlice = createSlice({
       state.message = "";
     },
     [activateUser.fulfilled]: (state, action) => {
-
-      console.log(action.payload)
-      
       if (action.payload.result) {
         //si no hay errores
         state.message = "Account activated successfully";
       }
 
-      if (action.payload.errors > 0 || !action.payload.result) {//si hay errores
+      if (action.payload.errors > 0 || !action.payload.result) {
+        //si hay errores
         state.errorRedux = "Account activation failed";
       }
 

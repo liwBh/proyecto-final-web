@@ -21,7 +21,12 @@ import { BiSave } from "react-icons/bi";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { VscSaveAs } from "react-icons/vsc";
 
+import {usePrivateRoute} from "../Hooks/usePrivateRoute";
+
 const Cocktail = () => {
+
+  usePrivateRoute();
+
   const [meCocktail, setMeCocktail] = useState({
     name: "",
     preparation: "",

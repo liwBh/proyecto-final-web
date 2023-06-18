@@ -8,7 +8,7 @@ import { CgDanger } from "react-icons/cg";
 import { MdMarkEmailRead } from "react-icons/md";
 import { regexEmail, regexLetterAndSpace } from "../Assets/ExpresionRegular";
 import { BiMailSend } from "react-icons/bi";
-import { createUser } from "../Redux/Users/UsersSlice";
+import { createUser, clearState } from "../Redux/Users/UsersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Components/Spinner";
 import {
@@ -186,6 +186,9 @@ const Register = () => {
     // si hay error
     if (errorRedux) {
       SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
     }
 
     //si hay mensaje
@@ -194,6 +197,7 @@ const Register = () => {
 
       setTimeout(() => {  
         setVerify(true);
+        dispatch(clearState());
       },3000);
 
       
@@ -238,6 +242,7 @@ const Register = () => {
               <form
                 className="my-5 bg-light shadow-3 p-2 rounded-1 form-control"
                 onSubmit={handleSubmmit}
+                autoComplete="off"
               >
                 <div className="bg-dark py-3 text-white rounded-3">
                   <h3 className="text-center text-white">Sign Up Form</h3>
@@ -255,6 +260,7 @@ const Register = () => {
                         value={name}
                         onChange={handleOnChange}
                         onInput={handleInput}
+                        autoComplete="off"
                       />
                       <label
                         htmlFor="name"
@@ -286,6 +292,7 @@ const Register = () => {
                         value={lastName}
                         onChange={handleOnChange}
                         onInput={handleInput}
+                        autoComplete="off"
                       />
                       <label
                         htmlFor="lastName"
@@ -316,6 +323,7 @@ const Register = () => {
                         name="email"
                         value={email}
                         onChange={handleOnChange}
+                        autoComplete="off"
                       />
                       <label
                         htmlFor="email"
@@ -346,6 +354,7 @@ const Register = () => {
                         name="password"
                         value={password}
                         onChange={handleOnChange}
+                        autoComplete="off"
                       />
                       <label
                         htmlFor="password"
@@ -376,6 +385,7 @@ const Register = () => {
                         name="passwordConfirm"
                         value={passwordConfirm}
                         onChange={handleOnChange}
+                        autoComplete="off"
                       />
                       <label
                         htmlFor="passwordConfirm"

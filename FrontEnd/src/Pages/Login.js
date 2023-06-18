@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Layout from "../Components/Layout";
 import { BiLock } from "react-icons/bi";
 import { FiMail } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgDanger } from "react-icons/cg";
 import { regexEmail } from "../Assets/ExpresionRegular";
+import { loginUser, clearState } from "../Redux/Auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SweetAlertError,
+  SweetAlertSuccessRedux,
+} from "../SweetAlert/SweetAlert";
+
 
 const Login = () => {
+
+  const { message, errorRedux } = useSelector((state) => ({
+    ...state.auth,
+  }));
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,6 +32,8 @@ const Login = () => {
   });
 
   const { email, password } = formData;
+
+  const navigate = useNavigate();
 
   const handleValidation = (e) => {
 
@@ -76,9 +91,58 @@ const Login = () => {
       return;
     }
 
+    
     //enviar datos al servidor
     console.log(formData);
+
+    //petición al servidor
+    dispatch( loginUser({data: formData}) );
+
+    //limpiar formulario
+    setFormData({
+      email: "",
+      password: "",
+    });
+
   };
+
+  useEffect(() => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+
+   // eslint-disable-next-line 
+  }, []);
+
+  useEffect(() => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+
+      //redireccionar al Login
+      setTimeout(() => {
+        navigate("/");
+        dispatch(clearState());
+      }, 2000);
+    }
+
+    // eslint-disable-next-line
+  }, [errorRedux, message]);
+
 
   const errorAlert = (
     <div className="text-danger my-2">
@@ -94,6 +158,7 @@ const Login = () => {
             <form
               className="my-5 bg-light shadow-3 p-2 rounded-1 form-control"
               onSubmit={handleSubmmit}
+              autoComplete="off"
             >
               <div className="bg-dark py-3 text-white rounded-3">
                 <h3 className="text-center text-white">Sign In Form</h3>
@@ -110,6 +175,7 @@ const Login = () => {
                       name="email"
                       value={email}
                       onChange={handleOnChange}
+                      autoComplete="off"
                     />
                     <label
                       htmlFor="email"
@@ -141,6 +207,7 @@ const Login = () => {
                       name="password"
                       value={password}
                       onChange={handleOnChange}
+                      autoComplete="off"
                     />
                     <label
                       htmlFor="password"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Logo2 from "../Images/logo-2.png";
 import { useParams, useNavigate } from "react-router-dom";
-import { activateUser } from "../Redux/Auth/AuthSlice";
+import { activateUser, clearState } from "../Redux/Auth/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SweetAlertError,
@@ -48,6 +48,9 @@ const VerifyEmail = () => {
     // si hay error
     if (errorRedux) {
       SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
     }
 
     //si hay mensaje
@@ -57,6 +60,7 @@ const VerifyEmail = () => {
       //redireccionar al Login
       setTimeout(() => {
         navigate("/login");
+        dispatch(clearState());
       }, 2000);
     }
 
