@@ -4,7 +4,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
 
   async ({ data }) => {
-    console.log(data);
+
     const response = await fetch("https://localhost:44328/api/Usuario/login", {
       method: "POST",
       headers: {
@@ -60,11 +60,29 @@ export const getLocalStorage = createAsyncThunk("auth/getLocalStorage", () => {
   };
 });
 
+export const upateDataUser = createAsyncThunk("auth/upateDataUser", ({data}) => {
+ 
+  const user =  {
+    id: data.id,
+    nombre: data.name,
+    apellidos: data.lastName,
+    correoElectronico: data.email,
+    password: "",
+    confirmarPassword: "",
+  }
+
+  // Convertir el objeto a una cadena de texto utilizando JSON.stringify
+  const objetoString  = JSON.stringify(user);
+  // Almacenar el objeto en el Local Storage
+  localStorage.setItem("user", objetoString);
+
+  return user;
+});
+
 export const activateUser = createAsyncThunk(
   "auth/activateUser",
 
   async ({ data }) => {
-    console.log(data);
     const response = await fetch(
       "https://localhost:44328/api/Usuario/activarUsuario",
       {
@@ -131,7 +149,6 @@ const authSlice = createSlice({
 
         //manejo del state
         state.message = "Logging in";
-        console.log(action.payload);
         state.user = action.payload.elUsuario;
         state.token = action.payload.session;
       }
@@ -168,6 +185,11 @@ const authSlice = createSlice({
     [getLocalStorage.fulfilled]: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+    },
+
+    //actualizar los datos de sesion usuario
+    [upateDataUser.fulfilled]: (state, action) => {
+      state.user = action.payload.user;
     },
 
     //activar cuenta de usuario

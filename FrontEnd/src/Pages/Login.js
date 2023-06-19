@@ -91,10 +91,6 @@ const Login = () => {
       return;
     }
 
-    
-    //enviar datos al servidor
-    console.log(formData);
-
     //petición al servidor
     dispatch( loginUser({data: formData}) );
 
@@ -230,7 +226,7 @@ const Login = () => {
 
               {/* Button */}
               <div className="d-flex justify-content-center align-items-center">
-                <button type="submit" className="btn btn-success w-25 mb-4">
+                <button type="submit" className="btn btn-success w-50 mb-4">
                   Sing Out
                 </button>
               </div>

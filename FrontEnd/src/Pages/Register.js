@@ -409,7 +409,7 @@ const Register = () => {
 
                 {/* Button */}
                 <div className="d-flex justify-content-center align-items-center">
-                  <button type="submit" className="btn btn-success w-25 mb-4">
+                  <button type="submit" className="btn btn-success w-50 mb-4">
                     Sing Up
                   </button>
                 </div>

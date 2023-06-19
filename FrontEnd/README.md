@@ -47,3 +47,9 @@
 * URL: https://www.npmjs.com/package/uuid
 * Comandos:
    - ```npm i uuid``
+
+
+### React Toastify
+* URL: https://www.npmjs.com/package/react-toastify
+* Comandos:
+   - ```npm install react-toastify --save```

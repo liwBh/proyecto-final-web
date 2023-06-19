@@ -26,6 +26,56 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+
+  async ({ data }) => {
+    const response = await fetch(
+      "https://localhost:44328/api/Usuario/ActualizarUsuario",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          elUsuario: {
+            id: data.id,
+            nombre: data.name,
+            apellidos: data.lastName,
+            correoElectronico: data.email,
+            password: data.password,
+          },
+        }),
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+
+  async ({ id }) => {
+    const response = await fetch(
+      "https://localhost:44328/api/Usuario/EliminarUsuario",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          elUsuario: {
+            id: id,
+          },
+        }),
+      }
+    );
+
+    return response.json();
+  }
+);
+
 export const clearState = createAsyncThunk("auth/clearState", () => {
   return {
     message: "",
@@ -73,6 +123,52 @@ const usersSlice = createSlice({
     [createUser.rejected]: (state, action) => {
       state.loading = false;
       state.errorRedux = "Failed to register account";
+    },
+
+    //consulta para actualizar usuario
+    [updateUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateUser.fulfilled]: (state, action) => {
+      if (action.payload.result) {
+        //si no hay errores
+        state.message = "Account updated successfully";
+      } else {
+        let error = "";
+        if (action.payload.errors > 0) {
+          error = "Failed to update account";
+        }
+        state.errorRedux = error;
+      }
+
+      state.loading = false;
+    },
+    [updateUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.errorRedux = "Failed to update account";
+    },
+
+    //consulta para eliminar usuario
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      if (action.payload.result) {
+        //si no hay errores
+        state.message = "Account deleted successfully";
+      } else {
+        let error = "";
+        if (action.payload.errors > 0) {
+          error = "Failed to delete account";
+        }
+        state.errorRedux = error;
+      }
+
+      state.loading = false;
+    },
+    [deleteUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.errorRedux = "Failed to delete account";
     },
 
     //resetear state
