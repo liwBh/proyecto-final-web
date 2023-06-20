@@ -36,6 +36,7 @@ const Cocktail = () => {
     category: "",
     alcoholic: "",
     glass: "",
+    likes: 0,
   });
 
   const [measureQuantity, setMeasureQuantity] = useState("");

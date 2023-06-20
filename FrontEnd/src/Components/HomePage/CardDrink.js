@@ -28,7 +28,7 @@ const CardDrink = ({ cocktail }) => {
             title={cocktail.name}>{shortTitle}</h5>
           </div>
 
-          <div className="mt-3 d-flex align-items-center justify-content-center">
+          <div className="mt-3 d-flex justify-content-around align-items-center">
             <Link
               to={`/driks/${cocktail.id}`}
               className="btn btn-dark align-self-center"

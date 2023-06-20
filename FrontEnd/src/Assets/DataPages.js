@@ -180,11 +180,104 @@ const setMeasureQuantitys =()=>{
 
 const measureQuantitys = setMeasureQuantitys();
 
+
+const tempCocktails = [
+  {
+    id: 1,
+    name: "pina colada 0",
+    preparation: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    measures: [
+      "1 Ounce (oz)",
+      "2 Ounce (oz)",
+      "1/2 Ounce (oz)",
+      "1 Ounce (oz)",
+    ],
+    ingredients: [
+      "Light rum",
+      "Applejack",
+      "Gin",
+      "Dark rum",
+    ],
+    image: "https://picsum.photos/800/800",
+    category:  "Ordinary Drink",
+    alcoholic: "Alcoholic",
+    glass: "Highball glass",
+    likes: 0,
+  },
+  {
+    id: 2,
+    name: "pina colada 1",
+    preparation: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    measures: [
+      "1 Ounce (oz)",
+      "2 Ounce (oz)",
+      "1/2 Ounce (oz)",
+      "1 Ounce (oz)",
+    ],
+    ingredients: [
+      "Light rum",
+      "Applejack",
+      "Gin",
+      "Dark rum",
+    ],
+    image: "https://picsum.photos/800/800",
+    category:  "Ordinary Drink",
+    alcoholic: "Alcoholic",
+    glass: "Highball glass",
+    likes: 0,
+  },
+  {
+    id: 3,
+    name: "pina colada 2",
+    preparation: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    measures: [
+      "1 Ounce (oz)",
+      "2 Ounce (oz)",
+      "1/2 Ounce (oz)",
+      "1 Ounce (oz)",
+    ],
+    ingredients: [
+      "Light rum",
+      "Applejack",
+      "Gin",
+      "Dark rum",
+    ],
+    image: "https://picsum.photos/800/800",
+    category:  "Ordinary Drink",
+    alcoholic: "Alcoholic",
+    glass: "Highball glass",
+    likes: 3,
+  },
+  {
+    id: 4,
+    name: "pina colada 3",
+    preparation: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    measures: [
+      "1 Ounce (oz)",
+      "2 Ounce (oz)",
+      "1/2 Ounce (oz)",
+      "1 Ounce (oz)",
+    ],
+    ingredients: [
+      "Light rum",
+      "Applejack",
+      "Gin",
+      "Dark rum",
+    ],
+    image: "https://picsum.photos/800/800",
+    category:  "Ordinary Drink",
+    alcoholic: "Alcoholic",
+    glass: "Highball glass",
+    likes: 0,
+  },
+];
+
 export {
   cocktailMeasures,
   categories,
   contentAlcoholic,
   ingredientsList,
   glassName,
-  measureQuantitys
+  measureQuantitys,
+  tempCocktails,
 }
