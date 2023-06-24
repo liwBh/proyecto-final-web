@@ -3,6 +3,7 @@ import Layout from "../Components/Layout";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { tempDrinks } from "../Assets/DataPages";
 import { AiFillLike } from "react-icons/ai";
+import { MdDeleteForever } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { usePrivateRoute } from "../Hooks/usePrivateRoute";
@@ -21,9 +22,7 @@ const DetailsDrinks = () => {
   }
 
   console.log(id);
-  const drink = tempDrinks.find(
-    (drink) => drink.id === parseInt(id)
-  );
+  const drink = tempDrinks.find((drink) => drink.id === parseInt(id));
   console.log(drink);
   console.log(tempDrinks);
 
@@ -60,26 +59,32 @@ const DetailsDrinks = () => {
 
                 {/* likes */}
                 <div className="mt-2 mb-5 d-flex justify-content-around align-items-center">
-                  <div className="likes-icon">
-                    <AiFillLike
-                      className={meLike}
-                      style={{ fontSize: "1.5rem" }}
-                    />
-                    <span
-                      className="likes-count text-muted"
-                      style={{ marginRight: marginRight }}
-                    >
-                      {drink.likes.length}
-                    </span>
-                  </div>
+                  <button className="btn btn-light shadow-2">
+                    <div className="likes-icon">
+                      <AiFillLike
+                        className={meLike}
+                        style={{ fontSize: "1.5rem" }}
+                      />
+                      <span
+                        className="likes-count text-muted"
+                        style={{ marginRight: marginRight }}
+                      >
+                        {drink.likes.length}
+                      </span>
+                    </div>
+                  </button>
 
                   {/* Buttons */}
                   <Link
                     to={`/edit-drink/${drink.id}`}
-                    className="btn btn-warning"
+                    className="btn btn-warning shadow-2"
                   >
-                    <MdModeEdit />
+                    <MdModeEdit style={{ fontSize: "1.5rem" }} />
                   </Link>
+
+                  <button className="btn btn-danger shadow-2">
+                    <MdDeleteForever style={{ fontSize: "1.5rem" }} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -94,9 +99,7 @@ const DetailsDrinks = () => {
                       <p className="card-text">{drink.category}</p>
                     </li>
                     <li>
-                      <p className="card-text text-danger">
-                        {drink.alcoholic}
-                      </p>
+                      <p className="card-text text-danger">{drink.alcoholic}</p>
                     </li>
                   </ul>
                 </div>

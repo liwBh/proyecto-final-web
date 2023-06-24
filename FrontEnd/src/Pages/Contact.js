@@ -309,7 +309,7 @@ const Contant = () => {
                                 className="text-secondary h-4"
                                 href="mailto:name@email.com"
                               >
-                                @gmail.com
+                                marybel@gmail.com
                               </a>
 
                               <p className="lead my-5">
@@ -485,7 +485,7 @@ const Contant = () => {
                                 className="text-secondary h-4"
                                 href="mailto:name@email.com"
                               >
-                                @gmail.com
+                                axel@gmail.com
                               </a>
 
                               <p className="lead my-5">

@@ -17,7 +17,9 @@ import {
 } from "../SweetAlert/SweetAlert";
 import { ToastContainer, toast } from "react-toastify";
 import {
-  loginOutUser,upateDataUser, getLocalStorage
+  loginOutUser,
+  upateDataUser,
+  getLocalStorage,
 } from "../Redux/Auth/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -134,7 +136,7 @@ const Profile = () => {
     //peticion a backend
     dispatch(updateUser({ data: formData }));
     dispatch(upateDataUser({ data: formData }));
-    dispatch( getLocalStorage() );
+    dispatch(getLocalStorage());
   };
 
   const showErroAlert = (message, id) => {
@@ -196,8 +198,7 @@ const Profile = () => {
   };
 
   const handleDelete = () => {
-
-    if(confirmDelete === ""){
+    if (confirmDelete === "") {
       toast.warn("You must enter the confirmation text", {
         position: "top-right",
         autoClose: 5000,
@@ -211,7 +212,7 @@ const Profile = () => {
       return;
     }
 
-    if(confirmDelete !== `I ${user?.nombre} ${user?.apellidos} agree`){
+    if (confirmDelete !== `I ${user?.nombre} ${user?.apellidos} agree`) {
       toast.warn("The confirmation text is not the same", {
         position: "top-right",
         autoClose: 5000,
@@ -436,15 +437,18 @@ const Profile = () => {
                       {/* MENSAJE Validacion*/}
                       {error.id === 5 && errorAlert}
                     </div>
+
+                    {/* Button */}
+                    <div className="d-flex justify-content-center align-items-center">
+                      <button
+                        type="submit"
+                        className="btn btn-success w-50 mb-4"
+                      >
+                        Update
+                      </button>
+                    </div>
                   </div>
                 )}
-
-                {/* Button */}
-                <div className="d-flex justify-content-center align-items-center">
-                  <button type="submit" className="btn btn-success w-50 mb-4">
-                    Update
-                  </button>
-                </div>
               </form>
             </div>
             {/* modal delete */}
@@ -463,7 +467,10 @@ const Profile = () => {
                       id="deleteCountLabel"
                     >
                       Delete my account{" "}
-                      <AiFillWarning className="text-white" style={{fontSize: "1.5rem"}}/>
+                      <AiFillWarning
+                        className="text-white"
+                        style={{ fontSize: "1.5rem" }}
+                      />
                     </h5>
                     <button
                       type="button"
@@ -474,7 +481,7 @@ const Profile = () => {
                     />
                   </div>
                   <div className="modal-body">
-                  <ToastContainer style={{ width: "400px" }} />
+                    <ToastContainer style={{ width: "400px" }} />
                     <p className="text-muted">
                       <span className="text-decoration-underline text-primary">
                         {" "}
@@ -497,7 +504,7 @@ const Profile = () => {
                           id="confirmDelete"
                           name="confirmDelete"
                           value={confirmDelete}
-                          onChange={(e)=> setConfirmDelete(e.target.value)}
+                          onChange={(e) => setConfirmDelete(e.target.value)}
                         />
                       </div>
                     </form>
@@ -510,8 +517,10 @@ const Profile = () => {
                     >
                       Close
                     </button>
-                    <button type="button" className="btn btn-danger btn-sm"
-                    onClick={handleDelete}
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={handleDelete}
                     >
                       Confirm
                     </button>
