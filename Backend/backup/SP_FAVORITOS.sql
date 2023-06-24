@@ -99,3 +99,20 @@ BEGIN
         SET @IsFavorite = 0;
     END
 END
+
+------------------------------------------------------------------------------------------
+Fecha de creación: 23-06-2023
+
+CREATE PROCEDURE SP_OBTENER_FAVORITOS_USUARIO
+    @usuarioid bigint
+AS
+BEGIN
+    SELECT b.bebidaid as id, b.bebidanombre as nombre, b.bebidapreparacion as preparacion, b.bebidatipoalcohol as tipoalcohol, c.çategorianombre as categoria, v.vasonombre as vaso
+    FROM tbfavorito f
+    INNER JOIN tbbebida b ON f.favoritobebidaid = b.bebidaid
+	INNER JOIN tbcategoria c ON b.bebidacategoriaid = c.categoriaid
+	INNER JOIN tbvaso v ON b.bebidavasoid = v.vasoid
+    INNER JOIN tbusuario u ON f.favoritousuarioid = u.usuarioid
+    WHERE f.favoritousuarioid = @usuarioid;
+END
+
