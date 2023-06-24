@@ -15,6 +15,8 @@ import Cocktails from "./Pages/Coktails";
 import Cocktail from "./Pages/Coktail";
 import VerifyEmail from "./Pages/VerifyEmail";
 import Profile from "./Pages/Profile";
+import CocktailDetails from "./Pages/CocktailDetails";
+import DrinkUserEdit from "./Pages/DrinkUserEdit";
 
 function App() {
 
@@ -38,7 +40,10 @@ function App() {
         {/* Rutas privadas */}
         <Route path="/cocktail" element={<Cocktail />} />
         <Route path="/list-cocktails" element={<Cocktails />} />
+        <Route path="/drik-detail/:id" element={<CocktailDetails />} />
+        <Route path="/drik-user-edit/:id" element={<DrinkUserEdit />} />
         <Route path="/profile" element={<Profile />} />
+
 
         {/* Ruta por defecto */}
         <Route path="*" element={<NotFoundPage />} />

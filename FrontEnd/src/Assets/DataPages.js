@@ -202,7 +202,8 @@ const tempCocktails = [
     category:  "Ordinary Drink",
     alcoholic: "Alcoholic",
     glass: "Highball glass",
-    likes: 0,
+    likes: [2],
+    userId: 1,
   },
   {
     id: 2,
@@ -224,7 +225,8 @@ const tempCocktails = [
     category:  "Ordinary Drink",
     alcoholic: "Alcoholic",
     glass: "Highball glass",
-    likes: 0,
+    likes: [15],
+    userId: 1,
   },
   {
     id: 3,
@@ -246,7 +248,8 @@ const tempCocktails = [
     category:  "Ordinary Drink",
     alcoholic: "Alcoholic",
     glass: "Highball glass",
-    likes: 3,
+    likes: [1, 2, 3],
+    userId: 1,
   },
   {
     id: 4,
@@ -268,7 +271,8 @@ const tempCocktails = [
     category:  "Ordinary Drink",
     alcoholic: "Alcoholic",
     glass: "Highball glass",
-    likes: 0,
+    likes: [15],
+    userId: 1,
   },
 ];
 

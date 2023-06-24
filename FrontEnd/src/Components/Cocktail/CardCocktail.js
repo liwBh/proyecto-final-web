@@ -11,6 +11,8 @@ const CardCocktail = ({ cocktail }) => {
     shortTitle = cocktail.name.slice(0, 18).concat("...");
   }
 
+  const marginRight = cocktail.likes.length > 10 && cocktail.likes.length < 100 ? "-6px" : cocktail.likes.length > 100 ? "-10px" : "0px";
+
   console.log(cocktail);
 
   return (
@@ -36,15 +38,15 @@ const CardCocktail = ({ cocktail }) => {
           </div>
           <div className="mt-2 d-flex justify-content-around align-items-center">
             <div className="likes-icon">
-              <AiFillLike className="text-dark" style={{ fontSize: "2rem" }} />
-              <span className="likes-count">{cocktail.likes}</span>
+              <AiFillLike className="text-secondary" style={{ fontSize: "1.5rem" }} />
+              <span className="likes-count text-muted" style={{marginRight: marginRight }}>{cocktail.likes.length}</span>
             </div>
           </div>
 
           <div className="mt-2 d-flex justify-content-around align-items-center">
 
             <Link
-              to={`/driks/${cocktail.id}`}
+              to={`/drik-detail/${cocktail.id}`}
               className="btn btn-dark align-self-center"
             >
               <FaRegEye /> Drink
