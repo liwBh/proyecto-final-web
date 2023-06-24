@@ -301,3 +301,19 @@ section.resume-section .resume-section-content {
   font-size: 0.8rem;
   font-weight: 700;
 }
+
+/* Estilo del scroll bar */
+::-webkit-scrollbar{
+  width: 10px;
+  background-color: #F5F5F5;
+  scrollbar-width: thin; /* Grosor del scrollbar */
+  scrollbar-color: #c0c0c0 #f0f0f0; /* Color del thumb y del track del scrollbar */
+}
+::-webkit-scrollbar-track{
+  background-color: #f0f0f0; /* Color del track del scrollbar */
+  border-radius: 5px; /* Bordes redondeados del track */
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 3px;
+  background-image: linear-gradient(to bottom, #c0c0c0, #f0f0f0);
+}

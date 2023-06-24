@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaSearch, FaCocktail } from "react-icons/fa";
+import { FaSearch, } from "react-icons/fa";
+import { BiDrink } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { fetchSearchCocktails } from "../../Redux/Features/CocktailSlice";
 import { SweetAlertError } from "../../SweetAlert/SweetAlert";
@@ -65,8 +66,8 @@ const SearchBox = () => {
               <div className="text-center text-white">
                 {/* Page heading*/}
                 <h1 className="mb-5">
-                  Find the best cocktail recipes online{" "}
-                  <FaCocktail className="ms-2" />
+                  Find the best cocktail recipes online from our users{" "}
+                  <BiDrink className="ms-2" />
                 </h1>
 
                 <form
@@ -97,9 +98,9 @@ const SearchBox = () => {
                         value={searchBy}
                         onChange={(e) => setSearchBy(parseInt(e.target.value))}
                       >
-                        <option value={1}>Name</option>
-                        <option value={2}>First Letter</option>
-                        <option value={3}>Ingredient</option>
+                        <option value={1}>All</option>
+                        <option value={2}>Me drinks</option>
+                        <option value={3}>others drinks</option>
                       </select>
                     </div>
 

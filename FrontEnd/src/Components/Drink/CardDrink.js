@@ -3,25 +3,29 @@ import { Link } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { AiFillLike } from "react-icons/ai";
+import { usePrivateRoute } from "../../Hooks/usePrivateRoute";
 
-const CardCocktail = ({ cocktail }) => {
+const CardDrink = ({ drink }) => {
+
+  usePrivateRoute();
+
   //abreviar el nombre de la bebida
-  let shortTitle = cocktail.name;
-  if (cocktail.name.length > 18) {
-    shortTitle = cocktail.name.slice(0, 18).concat("...");
+  let shortTitle = drink.name;
+  if (drink.name.length > 18) {
+    shortTitle = drink.name.slice(0, 18).concat("...");
   }
 
-  const marginRight = cocktail.likes.length > 10 && cocktail.likes.length < 100 ? "-6px" : cocktail.likes.length > 100 ? "-10px" : "0px";
+  const marginRight = drink.likes.length > 10 && drink.likes.length < 100 ? "-6px" : drink.likes.length > 100 ? "-10px" : "0px";
 
-  console.log(cocktail);
+  console.log(drink);
 
   return (
     <>
       <div className="card shadow-1">
         <img
-          src={cocktail.image}
+          src={drink.image}
           className="card-img-top"
-          alt={`Cocktail ${cocktail.name}`}
+          alt={`drink ${drink.name}`}
         />
         <div className="card-body ">
           <div className="d-flex align-items-center justify-content-center">
@@ -31,7 +35,7 @@ const CardCocktail = ({ cocktail }) => {
               className="card-title"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              title={cocktail.name}
+              title={drink.name}
             >
               {shortTitle}
             </h5>
@@ -39,14 +43,14 @@ const CardCocktail = ({ cocktail }) => {
           <div className="mt-2 d-flex justify-content-around align-items-center">
             <div className="likes-icon">
               <AiFillLike className="text-secondary" style={{ fontSize: "1.5rem" }} />
-              <span className="likes-count text-muted" style={{marginRight: marginRight }}>{cocktail.likes.length}</span>
+              <span className="likes-count text-muted" style={{marginRight: marginRight }}>{drink.likes.length}</span>
             </div>
           </div>
 
           <div className="mt-2 d-flex justify-content-around align-items-center">
 
             <Link
-              to={`/detail-drink/${cocktail.id}`}
+              to={`/details-drink/${drink.id}`}
               className="btn btn-dark align-self-center"
             >
               <FaRegEye /> Drink
@@ -58,4 +62,4 @@ const CardCocktail = ({ cocktail }) => {
   );
 };
 
-export default CardCocktail;
+export default CardDrink;

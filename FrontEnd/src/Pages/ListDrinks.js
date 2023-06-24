@@ -1,9 +1,9 @@
 import React from "react";
 import Layout from "../Components/Layout";
-
+import SearchBox from "../Components/Drink/SearchBox";
 import { usePrivateRoute } from "../Hooks/usePrivateRoute";
-import { tempCocktails } from "../Assets/DataPages";
-import CardCocktail from "../Components/Cocktail/CardCocktail";
+import { tempDrinks } from "../Assets/DataPages";
+import CardDrink from "../Components/Drink/CardDrink";
 
 const Coktails = () => {
   usePrivateRoute();
@@ -11,16 +11,16 @@ const Coktails = () => {
   return (
     <>
       <Layout>
-        <div className="" id="home">
-          {/* <SearchBox /> */}
+        <div className="" id="list-drinks">
+          <SearchBox /> 
 
           <div className="row my-5">
-            {tempCocktails.map((cocktail) => (
+            {tempDrinks.map((drink) => (
               <div
-                key={cocktail.id}
+                key={drink.id}
                 className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3"
               >
-               <CardCocktail cocktail={cocktail} />
+                <CardDrink drink={drink} />
               </div>
             ))}
           </div>

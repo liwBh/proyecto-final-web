@@ -1,12 +1,15 @@
 import React from "react";
 import Layout from "../Components/Layout";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { tempCocktails } from "../Assets/DataPages";
+import { tempDrinks } from "../Assets/DataPages";
 import { AiFillLike } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { usePrivateRoute } from "../Hooks/usePrivateRoute";
 
 const DetailsDrinks = () => {
+  usePrivateRoute();
+
   const { user } = useSelector((state) => state.auth);
 
   const { id } = useParams();
@@ -18,20 +21,20 @@ const DetailsDrinks = () => {
   }
 
   console.log(id);
-  const cocktail = tempCocktails.find(
-    (cocktail) => cocktail.id === parseInt(id)
+  const drink = tempDrinks.find(
+    (drink) => drink.id === parseInt(id)
   );
-  console.log(cocktail);
-  console.log(tempCocktails);
+  console.log(drink);
+  console.log(tempDrinks);
 
   const marginRight =
-    cocktail.likes.length > 10 && cocktail.likes.length < 100
+    drink.likes.length > 10 && drink.likes.length < 100
       ? "-6px"
-      : cocktail.likes.length > 100
+      : drink.likes.length > 100
       ? "-10px"
       : "0px";
 
-  const meLike = cocktail.likes.find((like) => like === user.id)
+  const meLike = drink.likes.find((like) => like === user.id)
     ? "text-primary"
     : "text-secondary";
 
@@ -44,14 +47,14 @@ const DetailsDrinks = () => {
               {/* Drink */}
               <div className="card mb-4 shadow-3">
                 <div className="card-header">
-                  <h2 className="card-title text-center">{cocktail.name}</h2>
+                  <h2 className="card-title text-center">{drink.name}</h2>
                 </div>
                 <div className="card-body py-5 d-flex justify-content-center align-items-center">
                   <img
                     className="rounded-2 card-img-bottom img-fluid"
-                    src={cocktail.image}
+                    src={drink.image}
                     style={{ maxWidth: "600px", maxHeight: "600px" }}
-                    alt={cocktail.name}
+                    alt={drink.name}
                   />
                 </div>
 
@@ -66,13 +69,13 @@ const DetailsDrinks = () => {
                       className="likes-count text-muted"
                       style={{ marginRight: marginRight }}
                     >
-                      {cocktail.likes.length}
+                      {drink.likes.length}
                     </span>
                   </div>
 
                   {/* Buttons */}
                   <Link
-                    to={`/edit-drink/${cocktail.id}`}
+                    to={`/edit-drink/${drink.id}`}
                     className="btn btn-warning"
                   >
                     <MdModeEdit />
@@ -88,11 +91,11 @@ const DetailsDrinks = () => {
                 <div className="card-body">
                   <ul className="list-unstyled mb-0">
                     <li>
-                      <p className="card-text">{cocktail.category}</p>
+                      <p className="card-text">{drink.category}</p>
                     </li>
                     <li>
                       <p className="card-text text-danger">
-                        {cocktail.alcoholic}
+                        {drink.alcoholic}
                       </p>
                     </li>
                   </ul>
@@ -103,7 +106,7 @@ const DetailsDrinks = () => {
                 <div className="card-header fw-bold">Ingredients</div>
                 <div className="card-body">
                   <ol className="list-unstyled list-group-numbered">
-                    {cocktail.ingredients.map((ingredient, index) => {
+                    {drink.ingredients.map((ingredient, index) => {
                       if (ingredient) {
                         //  si el ingrediente no es nulo
                         return (
@@ -128,7 +131,7 @@ const DetailsDrinks = () => {
                 <div className="card-header fw-bold">Measures</div>
                 <div className="card-body">
                   <ol className="list-unstyled list-group-numbered">
-                    {cocktail.measures.map((measure, index) => {
+                    {drink.measures.map((measure, index) => {
                       if (measure) {
                         //  si el medida no es nulo
                         return (
@@ -152,14 +155,14 @@ const DetailsDrinks = () => {
               <div className="card mb-4 shadow-2">
                 <div className="card-header fw-bold">Type of Glass</div>
                 <div className="card-body">
-                  <p className="card-text">{cocktail.glass}</p>
+                  <p className="card-text">{drink.glass}</p>
                 </div>
               </div>
               {/* preparation */}
               <div className="card mb-4 shadow-2">
                 <div className="card-header fw-bold">Preparation</div>
                 <div className="card-body">
-                  <p className="card-text">{cocktail.preparation}</p>
+                  <p className="card-text">{drink.preparation}</p>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../Components/Layout";
-import Dropzone from "../Components/Cocktail/Dropzone";
+import Dropzone from "../Components/Drink/Dropzone";
 import { FaCocktail } from "react-icons/fa";
 import { BiPlusMedical } from "react-icons/bi";
 import {
@@ -12,22 +12,19 @@ import {
   measureQuantitys,
 } from "../Assets/DataPages";
 
-import {
-  regexNumberAndLetter,
-} from "../Assets/ExpresionRegular";
+import { regexNumberAndLetter } from "../Assets/ExpresionRegular";
 
 import { CgDanger } from "react-icons/cg";
 import { BiSave } from "react-icons/bi";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { VscSaveAs } from "react-icons/vsc";
 
-import {usePrivateRoute} from "../Hooks/usePrivateRoute";
+import { usePrivateRoute } from "../Hooks/usePrivateRoute";
 
 const NewDrink = () => {
-
   usePrivateRoute();
 
-  const [meCocktail, setMeCocktail] = useState({
+  const [meDrink, setMeDrink] = useState({
     name: "",
     preparation: "",
     measures: [],
@@ -66,7 +63,7 @@ const NewDrink = () => {
     }
 
     //validacion de medidas maximo 14
-    if (meCocktail.measures.length === 14) {
+    if (meDrink.measures.length === 14) {
       showErroAlert("The measure maximum is 14", 5);
       return true;
     }
@@ -80,38 +77,41 @@ const NewDrink = () => {
     return false;
   };
 
-  const handleValidateSubmit = () => {  
-    if (meCocktail.name.trim() === "") {
+  const handleValidateSubmit = () => {
+    if (meDrink.name.trim() === "") {
       showErroAlert("The name is required", 1);
       return true;
     }
 
-    if (meCocktail.alcoholic.trim() === "") {
+    if (meDrink.alcoholic.trim() === "") {
       showErroAlert("The content alcoholic is required", 6);
       return true;
     }
 
-    if (meCocktail.category.trim() === "") {
+    if (meDrink.category.trim() === "") {
       showErroAlert("The category is required", 7);
       return true;
     }
 
-    if (meCocktail.glass.trim() === "") {
+    if (meDrink.glass.trim() === "") {
       showErroAlert("The type glass is required", 8);
       return true;
     }
 
-    if (meCocktail.image === null) {
+    if (meDrink.image === null) {
       showErroAlert("The image is required", 2);
       return true;
     }
 
-    if (meCocktail.preparation.trim() === "") {
+    if (meDrink.preparation.trim() === "") {
       showErroAlert("The preparation is required", 3);
       return true;
     }
 
-    if (meCocktail.ingredients.length === 0 || meCocktail.measures.length === 0) {
+    if (
+      meDrink.ingredients.length === 0 ||
+      meDrink.measures.length === 0
+    ) {
       showErroAlert("The ingredients and measures is required", 4);
       return true;
     }
@@ -119,45 +119,42 @@ const NewDrink = () => {
     //consultar a backend
 
     //redireccionar a la pagina de listado de bebidas
-    
+
     return false;
-  }
+  };
 
   const handleInput = (e) => {
-
-    if (e.target.name === "name") { 
+    if (e.target.name === "name") {
       if (!regexNumberAndLetter.test(e.target.value)) {
         showErroAlert("Only letters and numbers", 1);
         e.target.value = e.target.value.slice(0, -1);
       }
     }
 
-    if(e.target.name === "preparation") {
+    if (e.target.name === "preparation") {
       if (!regexNumberAndLetter.test(e.target.value)) {
         showErroAlert("Only letters and numbers", 1);
         e.target.value = e.target.value.slice(0, -1);
       }
     }
-    
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     //validacion de campos
-    if(handleValidateSubmit()){
-      return; 
+    if (handleValidateSubmit()) {
+      return;
     }
 
-    console.log(meCocktail);
+    console.log(meDrink);
 
     //se envia el objeto al backend
-
   };
 
   const handleChange = (e) => {
-    setMeCocktail({
-      ...meCocktail,
+    setMeDrink({
+      ...meDrink,
       [e.target.name]: e.target.value,
     });
   };
@@ -174,10 +171,10 @@ const NewDrink = () => {
         ? `${measureType}`
         : `${measureQuantity} ${measureType}`;
 
-    setMeCocktail({
-      ...meCocktail,
-      measures: [...meCocktail.measures, newMeasure],
-      ingredients: [...meCocktail.ingredients, ingredient],
+    setMeDrink({
+      ...meDrink,
+      measures: [...meDrink.measures, newMeasure],
+      ingredients: [...meDrink.ingredients, ingredient],
     });
 
     //se limpian los campos
@@ -203,32 +200,32 @@ const NewDrink = () => {
   };
 
   const handleDeleteItem = (index) => {
-    const newMeasures = meCocktail.measures.filter((measure, i) => i !== index);
-    const newIngredients = meCocktail.ingredients.filter(
+    const newMeasures = meDrink.measures.filter((measure, i) => i !== index);
+    const newIngredients = meDrink.ingredients.filter(
       (ingredient, i) => i !== index
     );
 
-    setMeCocktail({
-      ...meCocktail,
+    setMeDrink({
+      ...meDrink,
       measures: newMeasures,
       ingredients: newIngredients,
     });
   };
 
   const hadleEditItem = (index) => {
-    if (meCocktail.measures[index] !== "To your liking") {
+    if (meDrink.measures[index] !== "To your liking") {
       //si tiene una cantidad de medida
-      const text1 = meCocktail.measures[index].split(" ")[0];
-      const text2 = meCocktail.measures[index].substring(`${text1}`.length + 1);
+      const text1 = meDrink.measures[index].split(" ")[0];
+      const text2 = meDrink.measures[index].substring(`${text1}`.length + 1);
       setMeasureQuantity(text1);
       setMeasureType(text2);
     } else {
       //no tiene cantidadd de medida, es al gusto
       setMeasureQuantity("");
-      setMeasureType(meCocktail.measures[index]);
+      setMeasureType(meDrink.measures[index]);
     }
 
-    setIngredient(meCocktail.ingredients[index]);
+    setIngredient(meDrink.ingredients[index]);
 
     setIndexList(index);
   };
@@ -240,18 +237,18 @@ const NewDrink = () => {
     }
 
     //actualizar el array de medidas
-    const newMeasures = meCocktail.measures;
+    const newMeasures = meDrink.measures;
     newMeasures[indexList] =
       measureType === "To your liking"
         ? measureType
         : `${measureQuantity} ${measureType}`;
 
     //actualizar el array de ingredientes
-    const newIngredients = meCocktail.ingredients;
+    const newIngredients = meDrink.ingredients;
     newIngredients[indexList] = ingredient;
 
-    setMeCocktail({
-      ...meCocktail,
+    setMeDrink({
+      ...meDrink,
       measures: newMeasures,
       ingredients: newIngredients,
     });
@@ -282,7 +279,6 @@ const NewDrink = () => {
             <div className="row">
               {/* input - select */}
               <div className="col-12 col-md-6">
-
                 {/* name */}
                 <div className="mb-3 mt-4">
                   <label
@@ -296,9 +292,9 @@ const NewDrink = () => {
                     className="form-control"
                     id="name"
                     name="name"
-                    value={meCocktail.name}
+                    value={meDrink.name}
                     onChange={handleChange}
-                    onInput={ (e) => handleInput(e)}
+                    onInput={(e) => handleInput(e)}
                   />
 
                   {/* MENSAJE Validacion*/}
@@ -318,7 +314,7 @@ const NewDrink = () => {
                     className="form-select"
                     aria-label="Content Alcoholic"
                     name="alcoholic"
-                    value={meCocktail.alcoholic}
+                    value={meDrink.alcoholic}
                     onChange={handleChange}
                   >
                     <option value={""}>Select content alcoholic</option>
@@ -346,7 +342,7 @@ const NewDrink = () => {
                     className="form-select"
                     aria-label="Category"
                     name="category"
-                    value={meCocktail.category}
+                    value={meDrink.category}
                     onChange={handleChange}
                   >
                     <option value={""}>Select category drinks</option>
@@ -374,7 +370,7 @@ const NewDrink = () => {
                     className="form-select"
                     aria-label="Type Glass"
                     name="glass"
-                    value={meCocktail.glass}
+                    value={meDrink.glass}
                     onChange={handleChange}
                   >
                     <option value={""}>Select type glass</option>
@@ -489,7 +485,7 @@ const NewDrink = () => {
                 {/* List measure */}
                 <div className="mt3">
                   <ul className="list-group list-group-flush">
-                    {meCocktail.measures.map((measure, index) => (
+                    {meDrink.measures.map((measure, index) => (
                       <li
                         key={index}
                         className="list-group-item list-group-item-action row"
@@ -502,7 +498,7 @@ const NewDrink = () => {
                           </div>
                           <div className="col-4">{measure}</div>
                           <div className="col-4">
-                            {meCocktail.ingredients[index]}
+                            {meDrink.ingredients[index]}
                           </div>
                           <div className="col-1 d-flex justify-content-center">
                             <AiFillEdit
@@ -535,8 +531,8 @@ const NewDrink = () => {
                   </label>
                   <Dropzone
                     id="dropzone"
-                    setMeCocktail={setMeCocktail}
-                    meCocktail={meCocktail}
+                    setMeDrink={setMeDrink}
+                    meDrink={meDrink}
                   />
                   {/* MENSAJE Validacion*/}
                   {error.id === 2 && errorAlert}
@@ -555,9 +551,9 @@ const NewDrink = () => {
                     id="preparation"
                     rows="6"
                     name="preparation"
-                    value={meCocktail.preparation}
+                    value={meDrink.preparation}
                     onChange={handleChange}
-                    onInput={ (e) => handleInput(e)}
+                    onInput={(e) => handleInput(e)}
                   ></textarea>
                   {error.id === 3 && errorAlert}
                 </div>

@@ -33,7 +33,7 @@ const rejectStyle = {
 };
 
 /* Inicio del componente */
-const Dropzone = ({ setMeCocktail, meCocktail }) => {
+const Dropzone = ({ setMeDrink, meDrink }) => {
   /* state de la imagen para vista previa  */
   const [imageFile, setimageFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState([]);
@@ -104,11 +104,11 @@ const Dropzone = ({ setMeCocktail, meCocktail }) => {
     uploadImage.path = name;
     
 
-    setMeCocktail({...meCocktail,
+    setMeDrink({...meDrink,
       image: uploadImage,
     });
 
-    //console.log(meCocktail)
+    console.log(meDrink)
 
     //console.log(uploadImage);
   };

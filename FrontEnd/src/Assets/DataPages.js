@@ -181,7 +181,7 @@ const setMeasureQuantitys =()=>{
 const measureQuantitys = setMeasureQuantitys();
 
 
-const tempCocktails = [
+const tempDrinks = [
   {
     id: 1,
     name: "pina colada 0",
@@ -283,5 +283,5 @@ export {
   ingredientsList,
   glassName,
   measureQuantitys,
-  tempCocktails,
+  tempDrinks,
 }

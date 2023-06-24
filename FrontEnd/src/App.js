@@ -46,7 +46,7 @@ function App() {
         {/* Rutas privadas */}
         <Route path="/new-drink" element={<NewDrink />} />
         <Route path="/list-drinks" element={<ListDrinks />} />
-        <Route path="/detail-drink/:id" element={<DetailsDrinks />} />
+        <Route path="/details-drink/:id" element={<DetailsDrinks />} />
         <Route path="/edit-drink/:id" element={<EditDrink />} />
         <Route path="/profile" element={<Profile />} />
 

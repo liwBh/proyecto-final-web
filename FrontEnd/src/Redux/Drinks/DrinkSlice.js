@@ -26,11 +26,11 @@ export const createUser = createAsyncThunk(
   }
 );
 
-const cocktailsSlice = createSlice({
+const drinkSlice = createSlice({
   name: "cocktails",
   initialState: {
-    cocktail:{},
-    cocktails: [],
+    drink:{},
+    drinks: [],
     loading: false,
     errorRedux: null,
   },
@@ -44,4 +44,4 @@ const cocktailsSlice = createSlice({
   }
 );
 
-export default cocktailsSlice.reducer;
+export default drinkSlice.reducer;
