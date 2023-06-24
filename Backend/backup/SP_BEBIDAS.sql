@@ -6,6 +6,7 @@ CREATE PROCEDURE dbo.SP_INSERTAR_BEBIDA
 	@TIPO_ALCOHOL varchar(100),
 	@VASO_ID bigint,
 	@CATEGORIA_ID bigint,
+	@USUARIOID int,
 	@ID_RETURN bigint output,
 	@ERROR_ID int output,
 	@ERROR_DESCRIPCION nvarchar(max) output
@@ -19,7 +20,8 @@ BEGIN
 			bebidapreparacion,
 			bebidatipoalcohol,
 			bebidavasoid,
-			bebidacategoriaid
+			bebidacategoriaid,
+			bebidausuarioid
 		)
 		VALUES
 		(
@@ -27,7 +29,8 @@ BEGIN
 			@PREPARACION,
 			@TIPO_ALCOHOL,
 			@VASO_ID,
-			@CATEGORIA_ID
+			@CATEGORIA_ID,
+			@USUARIOID,
 		);
 
 		SET @ID_RETURN = SCOPE_IDENTITY();
@@ -52,6 +55,7 @@ CREATE PROCEDURE dbo.SP_ACTUALIZAR_BEBIDA
 	@TIPO_ALCOHOL varchar(100),
 	@VASO_ID bigint,
 	@CATEGORIA_ID bigint,
+	@USUARIOID int,
 	@ERROR_ID int output,
 	@ERROR_DESCRIPCION nvarchar(max) output
 )
@@ -66,7 +70,7 @@ BEGIN
 			bebidavasoid = @VASO_ID,
 			bebidacategoriaid = @CATEGORIA_ID
 		WHERE
-			bebidaid = @ID;
+			bebidaid = @ID AND bebidausuarioid = @USUARIOID;
 
 		SET @ERROR_ID = 0;
 		SET @ERROR_DESCRIPCION = '';
@@ -95,7 +99,8 @@ BEGIN
 			bebidapreparacion,
 			bebidatipoalcohol,
 			bebidavasoid,
-			bebidacategoriaid
+			bebidacategoriaid,
+			bebidausuarioid
 		FROM tbbebida;
 
 		SET @ERROR_ID = 0;
