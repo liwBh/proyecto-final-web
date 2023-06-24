@@ -23,7 +23,7 @@ import { VscSaveAs } from "react-icons/vsc";
 
 import {usePrivateRoute} from "../Hooks/usePrivateRoute";
 
-const Cocktail = () => {
+const NewDrink = () => {
 
   usePrivateRoute();
 
@@ -116,6 +116,10 @@ const Cocktail = () => {
       return true;
     }
 
+    //consultar a backend
+
+    //redireccionar a la pagina de listado de bebidas
+    
     return false;
   }
 
@@ -271,7 +275,7 @@ const Cocktail = () => {
         <div className="mt-5">
           {/* Formulario */}
           <h2 className="d-flex justify-content-start align-items-center mb-5">
-            New Cocktail <FaCocktail className="ms-2 text-dark" />
+            New Drink <FaCocktail className="ms-2 text-dark" />
           </h2>
 
           <form onSubmit={handleSubmit} className="form-control mb-5">
@@ -576,4 +580,4 @@ const Cocktail = () => {
   );
 };
 
-export default Cocktail;
+export default NewDrink;

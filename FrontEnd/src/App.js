@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+
+/* API externa dbCocktails */
 import HomePage from "./Pages/HomePage";
 import ProductDetails from "./Pages/ProductDetails";
 import NotFoundPage from "./Pages/NotFoundPage";
@@ -8,15 +10,19 @@ import About from "./Pages/About";
 import Contant from "./Pages/Contact";
 import Random from "./Pages/Random";
 import Category from "./Pages/Category";
+
+/* autentucacion - usuario */
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Forgot from "./Pages/Forgot";
-import Cocktails from "./Pages/Coktails";
-import Cocktail from "./Pages/Coktail";
 import VerifyEmail from "./Pages/VerifyEmail";
 import Profile from "./Pages/Profile";
-import CocktailDetails from "./Pages/CocktailDetails";
-import DrinkUserEdit from "./Pages/DrinkUserEdit";
+
+/* bebidas de usuario */
+import ListDrinks from "./Pages/ListDrinks";
+import DetailsDrinks from "./Pages/DetailsDrinks";
+import EditDrink from "./Pages/EditDrink";
+import NewDrink from "./Pages/NewDrink";
 
 function App() {
 
@@ -38,10 +44,10 @@ function App() {
         <Route path="/verify-email/:u/:c" element={<VerifyEmail />} />
 
         {/* Rutas privadas */}
-        <Route path="/cocktail" element={<Cocktail />} />
-        <Route path="/list-cocktails" element={<Cocktails />} />
-        <Route path="/drik-detail/:id" element={<CocktailDetails />} />
-        <Route path="/drik-user-edit/:id" element={<DrinkUserEdit />} />
+        <Route path="/new-drink" element={<NewDrink />} />
+        <Route path="/list-drinks" element={<ListDrinks />} />
+        <Route path="/detail-drink/:id" element={<DetailsDrinks />} />
+        <Route path="/edit-drink/:id" element={<EditDrink />} />
         <Route path="/profile" element={<Profile />} />
 
 

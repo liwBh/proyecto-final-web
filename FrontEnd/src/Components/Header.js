@@ -99,10 +99,10 @@ const Header = () => {
                   <Link
                     className="nav-link d-flex justify-content-center align-items-center"
                     aria-current="page"
-                    to="/cocktail"
+                    to="/new-drink"
                   >
                     <FaPlusSquare className="fs-5 me-1" />
-                    <span>Cocktail</span>
+                    <span>New Drink</span>
                   </Link>
                 </li>
               )}
@@ -113,10 +113,10 @@ const Header = () => {
                   <Link
                     className="nav-link d-flex justify-content-center align-items-center"
                     aria-current="page"
-                    to="/list-cocktails"
+                    to="/list-drinks"
                   >
                     <FaListAlt className="fs-5 me-1" />
-                    <span>Coktails</span>
+                    <span>List Drinks</span>
                   </Link>
                 </li>
               )}
@@ -128,7 +128,7 @@ const Header = () => {
                   to="/category"
                 >
                   <TbCategory className="fs-5 me-1" />
-                  <span>Category</span>
+                  <span>Categories Drinks</span>
                 </Link>
               </li>
               <li className="nav-item me-md-2">
@@ -138,7 +138,7 @@ const Header = () => {
                   to="/random"
                 >
                   <GiPerspectiveDiceSixFacesRandom className="fs-4 me-1" />
-                  <span>Cocktail</span>
+                  <span>Random Drink</span>
                 </Link>
               </li>
               <li className="nav-item me-md-2">

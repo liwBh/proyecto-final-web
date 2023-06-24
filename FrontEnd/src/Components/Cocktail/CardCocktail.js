@@ -46,7 +46,7 @@ const CardCocktail = ({ cocktail }) => {
           <div className="mt-2 d-flex justify-content-around align-items-center">
 
             <Link
-              to={`/drik-detail/${cocktail.id}`}
+              to={`/detail-drink/${cocktail.id}`}
               className="btn btn-dark align-self-center"
             >
               <FaRegEye /> Drink

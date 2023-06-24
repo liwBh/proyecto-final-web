@@ -6,7 +6,7 @@ import { AiFillLike } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 
-const CocktailDetails = () => {
+const DetailsDrinks = () => {
   const { user } = useSelector((state) => state.auth);
 
   const { id } = useParams();
@@ -72,7 +72,7 @@ const CocktailDetails = () => {
 
                   {/* Buttons */}
                   <Link
-                    to={`/drik-user-edit/${cocktail.id}`}
+                    to={`/edit-drink/${cocktail.id}`}
                     className="btn btn-warning"
                   >
                     <MdModeEdit />
@@ -170,4 +170,4 @@ const CocktailDetails = () => {
   );
 };
 
-export default CocktailDetails;
+export default DetailsDrinks;
