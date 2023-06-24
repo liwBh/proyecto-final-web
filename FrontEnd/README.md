@@ -53,3 +53,9 @@
 * URL: https://www.npmjs.com/package/react-toastify
 * Comandos:
    - ```npm install react-toastify --save```
+
+
+### React Responsive Carousel
+* URL: https://www.npmjs.com/package/react-responsive-carousel?activeTab=readme
+* Comandos:
+   - ```npm install react-responsive-carousel --save```

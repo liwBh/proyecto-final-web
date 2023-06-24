@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
