@@ -2,10 +2,11 @@ const regexNumbers = /^[0-9]+$/;
 
 const regexLetter = /^[a-zA-Z]+$/;
 
-const 
-regexLetterAndSpace = /^[a-zA-Z-Ñ-ñ ]+$/;
+const regexLetterAndSpace = /^[a-zA-Z-Ñ-ñ ]+$/;
 
 const regexInputDrink = /^[a-zA-Z-Ñ-ñ0-9 ]+$/;
+
+const regexTextArea = /[^a-zA-Z0-9\s,.:;!?-]/;
 
 const regexNumberAndLetter = /^[a-zA-Z0-9]+$/;
 
@@ -17,5 +18,6 @@ export{
   regexEmail,
   regexLetter,
   regexLetterAndSpace,
-  regexInputDrink
+  regexInputDrink,
+  regexTextArea
 }

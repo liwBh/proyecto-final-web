@@ -11,7 +11,7 @@ import {
   ingredientsList,
   measureQuantitys,
 } from "../Assets/DataPages";
-import { regexInputDrink } from "../Assets/ExpresionRegular";
+import { regexInputDrink, regexTextArea } from "../Assets/ExpresionRegular";
 import { CgDanger } from "react-icons/cg";
 import { BiSave } from "react-icons/bi";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
@@ -155,7 +155,7 @@ const EditDrink = () => {
     }
 
     if (e.target.name === "preparation") {
-      if (!regexInputDrink.test(e.target.value)) {
+      if (regexTextArea.test(e.target.value)) {
         showErroAlert("Only letters and numbers", 3);
         e.target.value = e.target.value.slice(0, -1);
       }

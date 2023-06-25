@@ -439,6 +439,12 @@ namespace BebidasBackend.Logica
 				}
 				else
 				{
+					if (req.laBebida.id == 0  )
+					{
+						//Falta el id
+						res.result = false;
+						res.errors.Add("id bebida faltante");
+					}
 					if (String.IsNullOrEmpty(req.laBebida.name))
 					{
 						//Falta el nombre
