@@ -17,12 +17,18 @@ const Coktails = () => {
     ...state.drinks,
   }));
 
+  const [listDrinks, setListDrinks] = React.useState([...drinks]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getDrinks());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => { 
+    setListDrinks([...drinks])
+  }, [drinks]);
 
   console.log(drinks)
 
@@ -53,10 +59,10 @@ const Coktails = () => {
     <>
       <Layout>
         <div className="" id="list-drinks">
-          <SearchBox />
+          <SearchBox setListDrinks={setListDrinks}/>
 
           <div className="row my-5">
-            {drinks.map((drink) => (
+            {listDrinks.map((drink) => (
               <div
                 key={drink.id}
                 className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3"

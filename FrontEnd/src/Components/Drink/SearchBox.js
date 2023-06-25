@@ -1,15 +1,45 @@
 import React, { useState } from "react";
-import { FaSearch, } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { BiDrink } from "react-icons/bi";
-import { useDispatch } from "react-redux";
-import { fetchSearchCocktails } from "../../Redux/Features/CocktailSlice";
+import { useSelector } from "react-redux";
+/* import { fetchSearchCocktails } from "../../Redux/Features/CocktailSlice"; */
 import { SweetAlertError } from "../../SweetAlert/SweetAlert";
 
-const SearchBox = () => {
+const SearchBox = ({ setListDrinks }) => {
+  const { drinks } = useSelector((state) => ({
+    ...state.drinks,
+  }));
+
+  const { user } = useSelector((state) => state.auth);
+
   const [keyword, setKeyword] = useState("");
   const [searchBy, setSearchBy] = useState(1);
 
-  const dispatch = useDispatch();
+  const handleFilter = (e) => {
+    console.log(e.target.value);
+    const filter = parseInt(e.target.value);
+    setSearchBy(filter);
+
+    switch (filter) {
+      //ver todos
+      case 1:
+        setListDrinks([...drinks]);
+        break;
+      //ver mis bebidas
+      case 2:
+        setListDrinks([...drinks.filter((drink) => drink.userId === user.id)]);
+        break;
+      //ver bebidas de otros
+      case 3:
+        setListDrinks([...drinks.filter((drink) => drink.userId !== user.id)]);
+        break;
+      default:
+        setListDrinks([...drinks]);
+        break;
+    }
+  };
+
+  /* const dispatch = useDispatch(); */
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,40 +50,15 @@ const SearchBox = () => {
       return;
     }
 
-    //selecionar la url de busqueda
-    let url = "";
+    //filtrar por keyword
+    const filter = drinks.filter((drink) => 
+      drink.name.toLowerCase().includes(keyword.toLowerCase())
+    );
 
-    switch (searchBy) {
-      //Por nombre
-      case 1:
-        url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${keyword}`;
-        break;
-
-      //por primera letra
-      case 2:
-        url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${keyword}`;
-        break;
-
-      //por ingrediente
-      case 3:
-        url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${keyword}`;
-        break;
-
-      default:
-        SweetAlertError("Please enter a search term and select a search type");
-        break;
-    }
-
-    if (!url) {
-      return;
-    }
-
-    //enviar la url al action
-    dispatch(fetchSearchCocktails({ url }));
+    setListDrinks([...filter]);
 
     //reseteo de los campos
     setKeyword("");
-    setSearchBy(1);
   };
 
   return (
@@ -82,7 +87,7 @@ const SearchBox = () => {
                         className="form-control form-control-lg"
                         id="keyword"
                         type="text"
-                        placeholder="Search for a drink by"
+                        placeholder="Search..."
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
                         required
@@ -96,7 +101,7 @@ const SearchBox = () => {
                         id="searchBy"
                         name="searchBy"
                         value={searchBy}
-                        onChange={(e) => setSearchBy(parseInt(e.target.value))}
+                        onChange={handleFilter}
                       >
                         <option value={1}>All</option>
                         <option value={2}>Me drinks</option>
