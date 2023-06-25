@@ -1,0 +1,334 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "id": "b6ec7cc5-ea06-4fec-ac97-6c99f032309f",
+        "name": "LaBarraWeb"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"elUsuario\": {\n    \"nombre\": \"wilfredo\",\n    \"apellidos\": \"Barquero Herrera\",\n    \"correoElectronico\": \"liwbarqueroh@gmail.com\",\n    \"password\": \"1234\",\n  }\n\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Usuario/ingresarUsuario"
+            },
+            "id": "609b95d7-cf68-4a38-960e-142512e128be",
+            "name": "RegistrarUsuario",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"correoElectronico\": \"liwbarqueroh@gmail.com\",\n  \"numeroDeActivacion\": \"0m6mjqr9OpGTVueV91PjnA\"\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Usuario/activarUsuario"
+            },
+            "id": "8c12b25f-ece1-497b-b4e5-8ff791434342",
+            "name": "activarUsuario",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\":{\n    \"id\": 14,\n    \"name\": \"sample string 2\",\n    \"preparation\": \"sample string 3\",\n    \"measures\":[\"sample string 1\", \"sample string 2\"],\n    \"ingredients\":[\"sample 34\", \"sample 42\"],\n    \"image\": \"https://picsum.photos/800/800\",\n    \"category\": \"sample string 5\",\n    \"alcoholic\": \"sample string 6\",\n    \"glass\": \"sample string 7\",\n    \"likes\":[],\n    \"userId\": 3\n  }\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/actualizarBebida"
+            },
+            "id": "1cd2b44b-09c3-4fe1-8ac7-2690681f22a5",
+            "name": "actualizarBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\":{\n    \"name\": \"sample string 2\",\n    \"preparation\": \"sample string 3\",\n    \"measures\":[\"sample string 1\", \"sample string 2\"],\n    \"ingredients\":[\"sample 34\", \"sample 42\"],\n    \"image\": \"https://picsum.photos/800/800\",\n    \"category\": \"sample string 5\",\n    \"alcoholic\": \"sample string 6\",\n    \"glass\": \"sample string 7\",\n    \"likes\":[],\n    \"userId\": 3\n  }\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/ingresarBebida"
+            },
+            "id": "a97cbc03-0f09-47a9-a3a3-9c671863c161",
+            "name": "crearBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\": {\n    \"id\":3\n  }\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/eliminarBebida"
+            },
+            "id": "7de51e18-4812-4128-8f79-58d7c7c73a85",
+            "name": "eliminarBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"elUsuario\":{\n    \"id\":11\n  }\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Usuario/EliminarUsuario"
+            },
+            "id": "c4ad6e7e-c462-48a0-8aa2-b73228b654b7",
+            "name": "eliminarUsuario",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"elUsuario\":{\n    \"correoElectronico\":\"liwbarqueroh@gmail.com\",\n    \"password\":\"123456789\",\n  }\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Usuario/login"
+            },
+            "id": "a4d80d4b-764c-4c2c-a4f9-d1e3e130dc84",
+            "name": "login",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/"
+            },
+            "id": "c3950565-2473-424f-b747-9c3c1094df08",
+            "name": "obtenerBebidas",
+            "headers": []
+          }
+        }
+      ]
+    }
+  ]
+}

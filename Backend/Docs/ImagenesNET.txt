@@ -1,0 +1,369 @@
+--------------------------------------------------------------------------------------
+API METHOD
+
+[System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Bebida/ingresarBebida")]
+        public ResIngresarBebida ingresarBebida([FromBody] ReqIngresarBebida req)
+        {
+            LogBebida logicaDelBackend = new LogBebida();
+
+            // Obtener la ruta de la carpeta "images"
+            string imagesFolderPath = HostingEnvironment.MapPath("~/images");
+
+            // Verificar si la carpeta "images" existe, si no, crearla
+            if (!Directory.Exists(imagesFolderPath))
+            {
+                Directory.CreateDirectory(imagesFolderPath);
+            }
+
+            // Obtener el nombre de la imagen
+            string imageName = Path.GetFileName(req.laBebida.image.path);
+
+            // Construir la ruta completa del archivo de imagen
+            string imagePath = Path.Combine(imagesFolderPath, imageName);
+
+            // Convertir la cadena base64 en bytes de imagen
+            byte[] imageData = Convert.FromBase64String(req.laBebida.image.base64Data);
+
+            // Guardar el archivo de imagen en la carpeta "images"
+            File.WriteAllBytes(imagePath, imageData);
+
+            // Actualizar la propiedad "image" con la ruta del archivo guardado
+            req.laBebida.image.path = imagePath;
+            req.laBebida.ruta = imagePath;
+
+            return logicaDelBackend.ingresarBebida(req);
+        }
+
+
+--------------------------------------------------------------------------------------------
+BACKEND 
+
+public ResIngresarBebida ingresarBebida(ReqIngresarBebida req)
+		{
+			ResIngresarBebida res = new ResIngresarBebida();
+			res.errors = new List<string>();
+			Int16 tipoTransccion = 0;
+			string descripcionError = "";
+			int? errorId = 0;
+			try
+			{
+				if (req == null)
+				{
+					res.result = false;
+					res.errors.Add("Request null");
+					tipoTransccion = (Int16)enumTipo.errorLogica;
+				}
+				else
+				{
+					if (String.IsNullOrEmpty(req.laBebida.name))
+					{
+						
+						res.result = false;
+						res.errors.Add("Name faltante");
+					}
+					if (String.IsNullOrEmpty(req.laBebida.preparation))
+					{
+						res.result = false;
+						res.errors.Add("Preparacion faltante");
+					}
+
+
+					
+					if (req.laBebida.measures == null)
+					{
+						res.result = false;
+						res.errors.Add("La medida no se agregó");
+					}
+					
+
+					if (req.laBebida.ingredients == null)
+					{
+						res.result = false;
+						res.errors.Add("El ingrediente no se agregó");
+					}
+					
+
+
+					if (String.IsNullOrEmpty(req.laBebida.ruta))
+					{
+						res.result = false;
+						res.errors.Add("image faltante");
+					}
+
+					if (String.IsNullOrEmpty(req.laBebida.category))
+					{
+						res.result = false;
+						res.errors.Add("category faltante");
+					}
+
+					if (String.IsNullOrEmpty(req.laBebida.alcoholic))
+					{
+						res.result = false;
+						res.errors.Add("alcoholic faltante");
+					}
+
+					
+					if (String.IsNullOrEmpty(req.laBebida.glass))
+					{
+						res.result = false;
+						res.errors.Add("glass faltante");
+					}
+
+
+					if (req.laBebida.userId == 0)
+					{
+
+						res.result = false;
+						res.errors.Add("No se agrego Usuario");
+					}
+
+					if (res.errors.Any())
+					{
+						//Hay errores
+						tipoTransccion = (Int16)enumTipo.errorLogica;
+					}
+					else
+					{
+						List<string> medidas = req.laBebida.measures;
+						string concatenatedMeasures = req.laBebida.measures[0].ToString();
+
+						for (int i = 1; i < req.laBebida.measures.Count; i++)
+						{
+							concatenatedMeasures += "-" + req.laBebida.measures[i].ToString();
+						}
+
+						List<string> ingredientes = req.laBebida.ingredients;
+						
+							string concatenatedIngredients = req.laBebida.ingredients[0].ToString();
+
+							for (int i = 1; i < req.laBebida.ingredients.Count; i++)
+							{
+								concatenatedIngredients += "-" + req.laBebida.ingredients[i].ToString();
+							}
+
+
+						
+
+						//No hay errores
+						//Mandar a AD
+						long? idReturn = 0;
+						int? idError = 0;
+						string errorBD = "";
+
+						Random rdm = new Random();
+						int intNumeroVerificacion = rdm.Next();
+					
+
+						conexionbdDataContext miLinq = new conexionbdDataContext();
+                        miLinq.SP_INSERTAR_BEBIDA(req.laBebida.name, req.laBebida.preparation, req.laBebida.alcoholic, req.laBebida.ruta, req.laBebida.glass, req.laBebida.category, concatenatedIngredients, concatenatedMeasures, req.laBebida.userId, ref idReturn, ref idError, ref errorBD);
+
+                        if (idError == 0)
+						{
+						
+							res.result = true;
+							tipoTransccion = (Int16)enumTipo.exitoso;
+							errorId = 0;
+						}
+						else
+						{
+							errorId = idError;
+							descripcionError = errorBD;
+							res.result = false;
+							res.errors.Add(errorBD);
+							tipoTransccion = (Int16)enumTipo.errorDeBaseDatos;
+						}
+
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				descripcionError = ex.Message;
+				res.result = false;
+				res.errors.Add($"{ex.Message}");
+				tipoTransccion = (Int16)enumTipo.errorNoControlado;
+
+			}
+			finally
+			{
+				//Bitacorear TODOOO lo que pasó (bueno o malo)
+				//Utilitarios.bitacorear(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, tipoTransccion, (int)errorId, descripcionError, JsonConvert.SerializeObject(req), JsonConvert.SerializeObject(res));
+			}
+
+			return res;
+		}
+
+------------------------------------------------------------------------------------
+ENTIDADES
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace BebidasBackend.Entidades.Mapeo
+{
+    public class ImageData
+    {
+       
+        public string name { get; set; }
+        public string path { get; set; }
+        public string base64Data { get; set; } // Cambiado a string para almacenar el base64 en lugar de byte[]
+        public string type { get; set; }
+       
+       
+    }
+}
+
+
+using BebidasBackend.Entidades.Mapeo;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace BebidasBackend.Entidades
+{
+	public class Bebida
+	{
+		public int id { get; set; }
+		public string name { get; set; }
+		public string preparation { get; set; }
+		public List<string> measures { get; set; }
+        public List<string> ingredients { get; set; }
+		public string ruta;
+        public ImageData image { get; set; }
+        public string category { get; set; }
+		public string alcoholic { get; set; }
+		public string glass { get; set; }
+		public List<int> likes { get; set; }
+		public int userId { get; set; }
+
+
+		
+	}
+}
+
+----------------------------------------------------------------------------
+
+HTML FORM + AJAX EXAMPLE
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de Ingreso de Bebida</title>
+</head>
+<body>
+  <h2>Ingresar Bebida</h2>
+  <form id="bebidaForm" enctype="multipart/form-data" method="POST">
+    <label for="name">Nombre:</label><br>
+    <input type="text" id="name" name="name" value="sample string 2"><br><br>
+    
+    <label for="preparation">Preparación:</label><br>
+    <textarea id="preparation" name="preparation">sample string 3</textarea><br><br>
+    
+    <label for="measures">Medidas:</label><br>
+    <input type="text" id="measures1" name="measures" value="sample string 1"><br>
+    <input type="text" id="measures2" name="measures" value="sample string 2"><br><br>
+    
+    <label for="ingredients">Ingredientes:</label><br>
+    <input type="text" id="ingredients1" name="ingredients" value="sample string 1"><br>
+    
+    <label for="image">Imagen:</label><br>
+    <input type="file" id="image" name="image"><br><br>
+    
+    <label for="category">Categoría:</label><br>
+    <input type="text" id="category" name="category" value="sample string 5"><br><br>
+    
+    <label for="alcoholic">Alcohólico:</label><br>
+    <input type="text" id="alcoholic" name="alcoholic" value="sample string 6"><br><br>
+    
+    <label for="glass">Tipo de Vaso:</label><br>
+    <input type="text" id="glass" name="glass" value="sample string 7"><br><br>
+    
+    <label for="likes">Likes:</label><br>
+    <input type="number" id="likes1" name="likes" value="1"><br>    
+    
+    <label for="userId">ID de Usuario:</label><br>
+    <input type="number" id="userId" name="userId" value="8"><br><br>
+    
+    <input type="submit" value="Enviar">
+  </form>
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+ $(document).ready(function() {
+  $('#bebidaForm').submit(function(event) {
+    event.preventDefault(); // Evitar envío del formulario por defecto
+
+    var imageFile = $('#image')[0].files[0]; // Obtener el archivo de imagen seleccionado
+    console.log(imageFile)
+    // Crear un objeto FileReader
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+      // Obtener la imagen como base64
+      var base64Image = reader.result.split(',')[1]; // Obtener solo la parte base64 de la cadena completa
+
+      // Construir el objeto JSON
+      var jsonBebidaData = {
+        laBebida: {
+          id: 1,
+          name: $('#name').val(),
+          preparation: $('#preparation').val(),
+          measures: [
+            $('#measures1').val(),
+            $('#measures2').val()
+          ],
+          ingredients: [
+            $('#ingredients1').val()
+          ],
+          image: {
+            name: imageFile.name, // Usar el nombre del archivo seleccionado
+            path: imageFile.name,
+            base64Data: base64Image, // Agregar el campo base64Data con la imagen en base64
+            type: imageFile.type
+          },
+          category: $('#category').val(),
+          alcoholic: $('#alcoholic').val(),
+          glass: $('#glass').val(),
+          likes: [
+            $('#likes1').val(),
+          ],
+          userId: $('#userId').val()
+        },
+        session: 'sample string 1'
+      };
+
+      console.log(jsonBebidaData);
+
+      $.ajax({
+        url: 'https://localhost:44328/api/Bebida/ingresarBebida',
+        type: 'POST',
+        data: JSON.stringify(jsonBebidaData), // Convertir el objeto JSON a una cadena JSON
+        contentType: 'application/json',
+        processData: false,
+        success: function(response) {
+          console.log('Datos enviados correctamente.');
+          // Aquí puedes manejar la respuesta del servidor
+        },
+        error: function(xhr, status, error) {
+          console.error('Error en la solicitud:', error);
+          // Aquí puedes manejar el error de la solicitud
+        }
+      });
+    };
+
+    // Leer el archivo como base64
+    reader.readAsDataURL(imageFile);
+  });
+});
+
+
+
+</script>
+
+</body>
+</html>

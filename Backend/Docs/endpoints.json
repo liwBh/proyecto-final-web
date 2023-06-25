@@ -1,0 +1,244 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "id": "cbe03c3c-cc32-44a2-bf3e-bc546d6eb0a1",
+        "name": "Bebidas"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\": {\n    \"id\": 1,\n    \"name\": \"sample string 2\",\n    \"preparation\": \"sample string 3\",\n    \"measures\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"ingredients\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"image\": \"sample string 4\",\n    \"category\": \"sample string 5\",\n    \"alcoholic\": \"sample string 6\",\n    \"glass\": \"sample string 7\",\n    \"likes\": [\n      1,\n      2\n    ],\n    \"userId\": 8\n  },\n  \"session\": \"sample string 1\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/actualizarBebida"
+            },
+            "id": "d2d75192-9640-4bed-b78b-e07cdc3225bb",
+            "name": "actualizarBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\": {\n    \"id\": 1,\n    \"name\": \"sample string 2\",\n    \"preparation\": \"sample string 3\",\n    \"measures\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"ingredients\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"image\": \"sample string 4\",\n    \"category\": \"sample string 5\",\n    \"alcoholic\": \"sample string 6\",\n    \"glass\": \"sample string 7\",\n    \"likes\": [\n      1,\n      2\n    ],\n    \"userId\": 8\n  },\n  \"session\": \"sample string 1\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/eliminarBebida"
+            },
+            "id": "3e513257-0a17-4337-8441-b14e992591e9",
+            "name": "eliminarBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"laBebida\": {\n    \"id\": 1,\n    \"name\": \"sample string 2\",\n    \"preparation\": \"sample string 3\",\n    \"measures\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"ingredients\": [\n      \"sample string 1\",\n      \"sample string 2\"\n    ],\n    \"image\": \"sample string 4\",\n    \"category\": \"sample string 5\",\n    \"alcoholic\": \"sample string 6\",\n    \"glass\": \"sample string 7\",\n    \"likes\": [\n      1,\n      2\n    ],\n    \"userId\": 8\n  },\n  \"session\": \"sample string 1\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/ingresarBebida"
+            },
+            "id": "1aef1d85-8e22-44ed-9d4a-ecce38edd3ee",
+            "name": "ingresarBebida",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida"
+            },
+            "id": "c2f65437-f4be-49d0-823d-899d37fe1f79",
+            "name": "obtenerBebidas",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/1"
+            },
+            "id": "b2350461-5420-41ce-81a6-a209928919c3",
+            "name": "obtenerBebidasUsuarios",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"idUsuario\": 1,\n  \"idBebida\": 2,\n  \"session\": \"sample string 3\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:44328",
+              "path": "/api/Bebida/vincularFavorito"
+            },
+            "id": "08556d01-c711-4a0e-a3d8-2381c11eeb11",
+            "name": "vincularFavorito",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
