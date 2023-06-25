@@ -17,7 +17,7 @@ const CardDrink = ({ drink }) => {
 
   const marginRight = drink.likes.length > 10 && drink.likes.length < 100 ? "-6px" : drink.likes.length > 100 ? "-10px" : "0px";
 
-  console.log(drink);
+  /* console.log(drink); */
 
   return (
     <>

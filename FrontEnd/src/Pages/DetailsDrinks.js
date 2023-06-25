@@ -1,41 +1,151 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Components/Layout";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { tempDrinks } from "../Assets/DataPages";
 import { AiFillLike } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
-import { useSelector } from "react-redux";
 import { usePrivateRoute } from "../Hooks/usePrivateRoute";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Components/Spinner";
+import {
+  SweetAlertError,
+  SweetAlertSuccessRedux,
+} from "../SweetAlert/SweetAlert";
+import { getDrinks, deleteDrink, clearState } from "../Redux/Drinks/DrinkSlice";
+import Swal from "sweetalert2";
 
 const DetailsDrinks = () => {
   usePrivateRoute();
+
+  const { loading, message, errorRedux, drinks } = useSelector((state) => ({
+    ...state.drinks,
+  }));
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDrinks());
+    // eslint-disable-next-line
+  }, []);
 
   const { user } = useSelector((state) => state.auth);
 
   const { id } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+      setTimeout(() => {
+        dispatch(clearState());
+        //redireccionar
+        navigate("/list-drinks");
+      }, 2000);
+    }
+
+    // eslint-disable-next-line
+  }, [errorRedux, message]);
+
   if (!id || !user) {
     //si no existe el id o usuario
     navigate("/");
   }
 
-  console.log(id);
-  const drink = tempDrinks.find((drink) => drink.id === parseInt(id));
-  console.log(drink);
-  console.log(tempDrinks);
-
-  const marginRight =
+  const [drink, setDrink] = useState(
+    drinks.find((drink) => drink.id === parseInt(id))
+  );
+  const [meLike, setMeLike] = useState(
+    drink.likes.find((like) => like === user.id)
+      ? "text-primary"
+      : "text-secondary"
+  );
+  const [marginRight, setMarginRight] = useState(
     drink.likes.length > 10 && drink.likes.length < 100
       ? "-6px"
       : drink.likes.length > 100
       ? "-10px"
-      : "0px";
+      : "0px"
+  );
 
-  const meLike = drink.likes.find((like) => like === user.id)
+  /* const drink = drinks.find((drink) => drink.id === parseInt(id)); */
+  /* console.log(id);
+  console.log(drink);
+  console.log(drinks); */
+
+  /*   const marginRight =
+    drink.likes.length > 10 && drink.likes.length < 100
+      ? "-6px"
+      : drink.likes.length > 100
+      ? "-10px"
+      : "0px"; */
+
+  /* const meLike = drink.likes.find((like) => like === user.id)
     ? "text-primary"
-    : "text-secondary";
+    : "text-secondary"; */
+
+  const handleLike = () => {
+    console.log("like");
+    //petición para dar like
+    //dispatch(setLikeDrink({ id: drink.id, user_id: user.id }));
+
+    //actualizar los drinks
+    dispatch(getDrinks());
+
+    //actualizar los state
+    setDrink(drinks.find((drink) => drink.id === parseInt(id)));
+    setMeLike(
+      drink.likes.find((like) => like === user.id)
+        ? "text-primary"
+        : "text-secondary"
+    );
+    setMarginRight(
+      drink.likes.length > 10 && drink.likes.length < 100
+        ? "-6px"
+        : drink.likes.length > 100
+        ? "-10px"
+        : "0px"
+    );
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure you want to eliminate this drink?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#C0392B",
+      cancelButtonColor: "#99A3A4",
+      confirmButtonText: "Yes, delete!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //petición para eliminar
+        dispatch(deleteDrink({ data: drink.id }));
+      }
+    });
+
+    //actualizar los drinks
+    dispatch(getDrinks());
+  };
+
+  //si esta cargando
+  if (loading) {
+    return (
+      <>
+        <Layout>
+          <Spinner />
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>
@@ -59,7 +169,10 @@ const DetailsDrinks = () => {
 
                 {/* likes */}
                 <div className="mt-2 mb-5 d-flex justify-content-around align-items-center">
-                  <button className="btn btn-light shadow-2">
+                  <button
+                    className="btn btn-light shadow-2"
+                    onClick={handleLike}
+                  >
                     <div className="likes-icon">
                       <AiFillLike
                         className={meLike}
@@ -75,16 +188,23 @@ const DetailsDrinks = () => {
                   </button>
 
                   {/* Buttons */}
-                  <Link
-                    to={`/edit-drink/${drink.id}`}
-                    className="btn btn-warning shadow-2"
-                  >
-                    <MdModeEdit style={{ fontSize: "1.5rem" }} />
-                  </Link>
+                  {user.id === drink.userId ? (
+                    <>
+                      <Link
+                        to={`/edit-drink/${drink.id}`}
+                        className="btn btn-warning shadow-2"
+                      >
+                        <MdModeEdit style={{ fontSize: "1.5rem" }} />
+                      </Link>
 
-                  <button className="btn btn-danger shadow-2">
-                    <MdDeleteForever style={{ fontSize: "1.5rem" }} />
-                  </button>
+                      <button
+                        className="btn btn-danger shadow-2"
+                        onClick={handleDelete}
+                      >
+                        <MdDeleteForever style={{ fontSize: "1.5rem" }} />
+                      </button>
+                    </>
+                  ) : null}
                 </div>
               </div>
             </div>

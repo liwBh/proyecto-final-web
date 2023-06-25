@@ -1,27 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-/* funcion para convertir array a string */
-const convertirArrayAString = (array) => {
-  let string = "";
-
-  array.forEach((element) => {
-    string += element + "-";
-  });
-
-  return string;
-};
-
-/* funcion para convertir string a array */
-const convertirStringAArray = (string) => {
-  const array = string.split("-");
-
-  return array;
-};
 
 export const createDrink = createAsyncThunk(
   "drinks/createDrink",
 
   async ({ data }) => {
+    console.log(data);
+    console.log(JSON.stringify(data))
     const response = await fetch(
       "https://localhost:44328/api/Bebida/ingresarBebida",
       {
@@ -31,10 +16,8 @@ export const createDrink = createAsyncThunk(
         },
         body: JSON.stringify({
           laBebida: {
-            ingredientes: convertirArrayAString(data.ingredients),
-            medidas: convertirArrayAString(data.measures),
-            correoElectronico: data.email,
-            password: data.password,
+            ...data,
+            "image": "https://picsum.photos/800/800",//temporal
           },
         }),
       }
@@ -71,23 +54,19 @@ export const setLikeDrink = createAsyncThunk(
 );
 
 export const getDrinks = createAsyncThunk("drinks/getDrinks", async () => {
-  const res = await fetch("https://localhost:44328/api/Bebida/obtenerBebidas");
+  const res = await fetch("https://localhost:44328/api/Bebida/");
   const data = await res.json();
 
-  const drinks = data.map((drink) => {
-    drink.ingredientes = convertirStringAArray(drink.ingredientes);
-    drink.medidas = convertirStringAArray(drink.medidas);
+  /* console.log(data); */
 
-    return drink;
-  });
-
-  return drinks;
+  return data;
 });
 
 export const updateDrink = createAsyncThunk(
   "drinks/updateDrink",
 
   async ({ data }) => {
+    console.log(data);
     const response = await fetch(
       "https://localhost:44328/api/Bebida/actualizarBebida",
       {
@@ -97,10 +76,8 @@ export const updateDrink = createAsyncThunk(
         },
         body: JSON.stringify({
           laBebida: {
-            nombre: data.name,
-            apellidos: data.lastName,
-            correoElectronico: data.email,
-            password: data.password,
+            ...data,
+            "image": "https://picsum.photos/800/800",//temporal
           },
         }),
       }
@@ -123,10 +100,7 @@ export const deleteDrink = createAsyncThunk(
         },
         body: JSON.stringify({
           laBebida: {
-            nombre: data.name,
-            apellidos: data.lastName,
-            correoElectronico: data.email,
-            password: data.password,
+            id: data
           },
         }),
       }
@@ -163,7 +137,7 @@ const drinkSlice = createSlice({
     [getDrinks.fulfilled]: (state, action) => {
       if (action.payload.result) {
         //si no hay errores
-        state.drinks = action.payload.bebidas;
+        state.drinks = action.payload.ListaDeBebidas;
       }
 
       if (action.payload.errors > 0 || !action.payload.result) {
@@ -183,6 +157,7 @@ const drinkSlice = createSlice({
       state.loading = true;
     },
     [createDrink.fulfilled]: (state, action) => {
+      /* console.log(action.payload); */
       if (action.payload.result) {
         //si no hay errores
         state.message = "Drink successfully registered";
@@ -232,6 +207,7 @@ const drinkSlice = createSlice({
       if (action.payload.result) {
         //si no hay errores
         state.message = "Drink successfully deleted";
+        console.log("entro!!")
       } else {
         let error = "";
         if (action.payload.errors > 0 || !action.payload.result) {

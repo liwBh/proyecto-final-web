@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Components/Layout";
 import Dropzone from "../Components/Drink/Dropzone";
 import { FaCocktail } from "react-icons/fa";
@@ -18,8 +18,13 @@ import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { VscSaveAs } from "react-icons/vsc";
 import { usePrivateRoute } from "../Hooks/usePrivateRoute";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { tempDrinks } from "../Assets/DataPages";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Components/Spinner";
+import {
+  SweetAlertError,
+  SweetAlertSuccessRedux,
+} from "../SweetAlert/SweetAlert";
+import { getDrinks, updateDrink, clearState } from "../Redux/Drinks/DrinkSlice";
 
 const EditDrink = () => {
   usePrivateRoute();
@@ -34,9 +39,21 @@ const EditDrink = () => {
     navigate("/");
   }
 
-  const drink = tempDrinks.find((drink) => drink.id === parseInt(id));
+  const { loading, message, errorRedux, drinks } = useSelector((state) => ({
+    ...state.drinks,
+  }));
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDrinks());
+    // eslint-disable-next-line
+  }, []);
+
+  const drink = drinks.find((drink) => drink.id === parseInt(id));
 
   const [meDrink, setMeDrink] = useState({
+    id: drink.id,
     name: drink.name,
     preparation: drink.preparation,
     measures: drink.measures,
@@ -46,6 +63,7 @@ const EditDrink = () => {
     alcoholic: drink.alcoholic,
     glass: drink.glass,
     likes: drink.likes,
+    userId: user?.id
   });
 
   const [measureQuantity, setMeasureQuantity] = useState("");
@@ -125,10 +143,6 @@ const EditDrink = () => {
       return true;
     }
 
-    //consultar a backend
-
-    //redireccionar a la pagina de listado de bebidas
-
     return false;
   };
 
@@ -142,7 +156,7 @@ const EditDrink = () => {
 
     if (e.target.name === "preparation") {
       if (!regexInputDrink.test(e.target.value)) {
-        showErroAlert("Only letters and numbers", 1);
+        showErroAlert("Only letters and numbers", 3);
         e.target.value = e.target.value.slice(0, -1);
       }
     }
@@ -158,7 +172,13 @@ const EditDrink = () => {
 
     console.log(meDrink);
 
-    //se envia el objeto al backend
+    //consultar a backend
+    dispatch(updateDrink({data: meDrink}));
+
+    //redireccionar a la pagina de listado de bebidas
+    setTimeout(() => {
+      navigate("/list-drinks");
+    }, 2000);
   };
 
   const handleChange = (e) => {
@@ -246,14 +266,15 @@ const EditDrink = () => {
     }
 
     //actualizar el array de medidas
-    const newMeasures = meDrink.measures;
-    newMeasures[indexList] =
+    const newMeasures = [...meDrink.measures];
+    newMeasures[indexList] = //Aqui falla
       measureType === "To your liking"
         ? measureType
         : `${measureQuantity} ${measureType}`;
 
+
     //actualizar el array de ingredientes
-    const newIngredients = meDrink.ingredients;
+    const newIngredients = [...meDrink.ingredients];
     newIngredients[indexList] = ingredient;
 
     setMeDrink({
@@ -274,6 +295,39 @@ const EditDrink = () => {
       {error.message} <CgDanger className="text-danger" />
     </div>
   );
+
+  useEffect(() => {
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+      setTimeout(() => {
+        dispatch(clearState());
+        //redireccionar
+        navigate("/list-drinks");
+      }, 2000);
+    }
+
+    // eslint-disable-next-line
+  }, [errorRedux, message]);
+  
+  //si esta cargando
+  if (loading) {
+    return (
+      <>
+        <Layout>
+          <Spinner />
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>

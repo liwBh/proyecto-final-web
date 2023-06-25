@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Components/Layout";
 import Dropzone from "../Components/Drink/Dropzone";
 import { FaCocktail } from "react-icons/fa";
@@ -11,18 +11,33 @@ import {
   ingredientsList,
   measureQuantitys,
 } from "../Assets/DataPages";
-
 import { regexInputDrink } from "../Assets/ExpresionRegular";
-
 import { CgDanger } from "react-icons/cg";
 import { BiSave } from "react-icons/bi";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { VscSaveAs } from "react-icons/vsc";
-
+import { useNavigate } from "react-router-dom";
 import { usePrivateRoute } from "../Hooks/usePrivateRoute";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Components/Spinner";
+import {
+  SweetAlertError,
+  SweetAlertSuccessRedux,
+} from "../SweetAlert/SweetAlert";
+import { createDrink, clearState } from "../Redux/Drinks/DrinkSlice";
 
 const NewDrink = () => {
+
   usePrivateRoute();
+
+  const { user } = useSelector((state) => state.auth);
+
+  const { loading, message, errorRedux } = useSelector((state) => ({
+    ...state.drinks,
+  }));
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [meDrink, setMeDrink] = useState({
     name: "",
@@ -33,7 +48,8 @@ const NewDrink = () => {
     category: "",
     alcoholic: "",
     glass: "",
-    likes: 0,
+    likes: [],
+    userId: user?.id
   });
 
   const [measureQuantity, setMeasureQuantity] = useState("");
@@ -108,17 +124,10 @@ const NewDrink = () => {
       return true;
     }
 
-    if (
-      meDrink.ingredients.length === 0 ||
-      meDrink.measures.length === 0
-    ) {
+    if (meDrink.ingredients.length === 0 || meDrink.measures.length === 0) {
       showErroAlert("The ingredients and measures is required", 4);
       return true;
     }
-
-    //consultar a backend
-
-    //redireccionar a la pagina de listado de bebidas
 
     return false;
   };
@@ -133,7 +142,7 @@ const NewDrink = () => {
 
     if (e.target.name === "preparation") {
       if (!regexInputDrink.test(e.target.value)) {
-        showErroAlert("Only letters and numbers", 1);
+        showErroAlert("Only letters and numbers", 3);
         e.target.value = e.target.value.slice(0, -1);
       }
     }
@@ -146,10 +155,27 @@ const NewDrink = () => {
     if (handleValidateSubmit()) {
       return;
     }
-
-    console.log(meDrink);
-
     //se envia el objeto al backend
+    dispatch(createDrink({ data: meDrink }));
+
+    //limpiar formulario, del autocomplete
+    setMeDrink({
+      name: "",
+      preparation: "",
+      measures: [],
+      ingredients: [],
+      image: null,
+      category: "",
+      alcoholic: "",
+      glass: "",
+      likes: [],
+      userId: user?.id
+    });
+
+    //redireccionar a la pagina de listado de bebidas
+    setTimeout(() => {
+      navigate("/list-drinks");
+    }, 2000);
   };
 
   const handleChange = (e) => {
@@ -237,14 +263,14 @@ const NewDrink = () => {
     }
 
     //actualizar el array de medidas
-    const newMeasures = meDrink.measures;
+    const newMeasures = [...meDrink.measures];
     newMeasures[indexList] =
       measureType === "To your liking"
         ? measureType
         : `${measureQuantity} ${measureType}`;
 
     //actualizar el array de ingredientes
-    const newIngredients = meDrink.ingredients;
+    const newIngredients = [...meDrink.ingredients];
     newIngredients[indexList] = ingredient;
 
     setMeDrink({
@@ -260,11 +286,55 @@ const NewDrink = () => {
     setIngredient("");
   };
 
+  useEffect(() => {
+    //limpiar formulario, del autocomplete
+    setMeDrink({
+      name: "",
+      preparation: "",
+      measures: [],
+      ingredients: [],
+      image: null,
+      category: "",
+      alcoholic: "",
+      glass: "",
+      likes: [],
+      userId: user?.id
+    });
+
+    // si hay error
+    if (errorRedux) {
+      SweetAlertError(errorRedux);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
+    }
+
+    //si hay mensaje
+    if (message) {
+      SweetAlertSuccessRedux(message);
+      setTimeout(() => {
+        dispatch(clearState());
+      }, 2000);
+    }
+    // eslint-disable-next-line
+  }, [errorRedux, message]);
+
   const errorAlert = (
     <div className="text-danger my-2">
       {error.message} <CgDanger className="text-danger" />
     </div>
   );
+
+  //si esta cargando
+  if (loading) {
+    return (
+      <>
+        <Layout>
+          <Spinner />
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>

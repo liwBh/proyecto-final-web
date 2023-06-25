@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BebidasBackend", "BebidasBackend\BebidasBackend.csproj", "{6084A62B-C36E-4CE9-A0C6-D0D36D96F912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BebidasAPI", "BebidasAPI\BebidasAPI.csproj", "{34444FDE-D21E-4962-AF32-07153BBB8686}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6084A62B-C36E-4CE9-A0C6-D0D36D96F912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6084A62B-C36E-4CE9-A0C6-D0D36D96F912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6084A62B-C36E-4CE9-A0C6-D0D36D96F912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6084A62B-C36E-4CE9-A0C6-D0D36D96F912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34444FDE-D21E-4962-AF32-07153BBB8686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34444FDE-D21E-4962-AF32-07153BBB8686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34444FDE-D21E-4962-AF32-07153BBB8686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34444FDE-D21E-4962-AF32-07153BBB8686}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBBAD11C-AB08-454B-B399-C266CEFA7B69}
+	EndGlobalSection
+EndGlobal
