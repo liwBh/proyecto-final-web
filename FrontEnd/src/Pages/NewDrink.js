@@ -12,7 +12,7 @@ import {
   measureQuantitys,
 } from "../Assets/DataPages";
 
-import { regexNumberAndLetter } from "../Assets/ExpresionRegular";
+import { regexInputDrink } from "../Assets/ExpresionRegular";
 
 import { CgDanger } from "react-icons/cg";
 import { BiSave } from "react-icons/bi";
@@ -125,14 +125,14 @@ const NewDrink = () => {
 
   const handleInput = (e) => {
     if (e.target.name === "name") {
-      if (!regexNumberAndLetter.test(e.target.value)) {
+      if (!regexInputDrink.test(e.target.value)) {
         showErroAlert("Only letters and numbers", 1);
         e.target.value = e.target.value.slice(0, -1);
       }
     }
 
     if (e.target.name === "preparation") {
-      if (!regexNumberAndLetter.test(e.target.value)) {
+      if (!regexInputDrink.test(e.target.value)) {
         showErroAlert("Only letters and numbers", 1);
         e.target.value = e.target.value.slice(0, -1);
       }
