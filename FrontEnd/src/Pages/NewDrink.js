@@ -155,6 +155,7 @@ const NewDrink = () => {
     if (handleValidateSubmit()) {
       return;
     }
+
     //se envia el objeto al backend
     dispatch(createDrink({ data: meDrink }));
 

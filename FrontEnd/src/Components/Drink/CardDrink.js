@@ -4,10 +4,12 @@ import { FaRegEye } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { AiFillLike } from "react-icons/ai";
 import { usePrivateRoute } from "../../Hooks/usePrivateRoute";
+import { setCurrentDrink} from "../../Redux/Drinks/DrinkSlice";
+import { useDispatch } from "react-redux";
 
 const CardDrink = ({ drink }) => {
-
   usePrivateRoute();
+  const dispatch = useDispatch();
 
   //abreviar el nombre de la bebida
   let shortTitle = drink.name;
@@ -15,17 +17,25 @@ const CardDrink = ({ drink }) => {
     shortTitle = drink.name.slice(0, 18).concat("...");
   }
 
-  const marginRight = drink.likes.length > 10 && drink.likes.length < 100 ? "-6px" : drink.likes.length > 100 ? "-10px" : "0px";
+  const marginRight =
+    drink.likes.length > 10 && drink.likes.length < 100
+      ? "-6px"
+      : drink.likes.length > 100
+      ? "-10px"
+      : "0px";
 
-  /* console.log(drink); */
+  const handleCurrentDrink = () => {
+    dispatch( setCurrentDrink({ data: drink }) );
+  };
 
   return (
     <>
       <div className="card shadow-1">
         <img
-          src={drink.image}
+          src={drink.ruta}
           className="card-img-top"
           alt={`drink ${drink.name}`}
+          height={300}
         />
         <div className="card-body ">
           <div className="d-flex align-items-center justify-content-center">
@@ -42,16 +52,24 @@ const CardDrink = ({ drink }) => {
           </div>
           <div className="mt-2 d-flex justify-content-around align-items-center">
             <div className="likes-icon">
-              <AiFillLike className="text-secondary" style={{ fontSize: "1.5rem" }} />
-              <span className="likes-count text-muted" style={{marginRight: marginRight }}>{drink.likes.length}</span>
+              <AiFillLike
+                className="text-secondary"
+                style={{ fontSize: "1.5rem" }}
+              />
+              <span
+                className="likes-count text-muted"
+                style={{ marginRight: marginRight }}
+              >
+                {drink.likes.length}
+              </span>
             </div>
           </div>
 
           <div className="mt-2 d-flex justify-content-around align-items-center">
-
             <Link
               to={`/details-drink/${drink.id}`}
               className="btn btn-dark align-self-center"
+              onClick={() => handleCurrentDrink()}
             >
               <FaRegEye /> Drink
             </Link>

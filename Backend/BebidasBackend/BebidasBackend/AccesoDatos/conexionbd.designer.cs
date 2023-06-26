@@ -20,24 +20,17 @@ namespace BebidasBackend.AccesoDatos
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-	using System.Configuration;
-
+	
+	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="bdbebidas")]
 	public partial class conexionbdDataContext : System.Data.Linq.DataContext
 	{
-		private static string conexion = ConfigurationManager.ConnectionStrings["bdbebidasConnectionString"].ConnectionString;
-
+		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnCreated();
-		#endregion
-
-		public conexionbdDataContext() : base(conexion, mappingSource)
-		{
-			OnCreated();
-		}
-	
+    #endregion
 		
 		public conexionbdDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -81,6 +74,15 @@ namespace BebidasBackend.AccesoDatos
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(4)));
 			fILASACTUALIZADAS = ((System.Nullable<int>)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_BEBIDA")]
+		public int SP_ACTUALIZAR_BEBIDA([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID", DbType="BigInt")] System.Nullable<long> iD, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="NOMBRE", DbType="NVarChar(50)")] string nOMBRE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PREPARACION", DbType="NVarChar(200)")] string pREPARACION, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TIPO_ALCOHOL", DbType="VarChar(100)")] string tIPO_ALCOHOL, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RUTA", DbType="VarChar(255)")] string rUTA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="VASO", DbType="VarChar(50)")] string vASO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CATEGORIA", DbType="VarChar(50)")] string cATEGORIA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="INGREDIENTES", DbType="VarChar(255)")] string iNGREDIENTES, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MEDIDAS", DbType="VarChar(255)")] string mEDIDAS, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="USUARIOID", DbType="Int")] System.Nullable<int> uSUARIOID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_ID", DbType="Int")] ref System.Nullable<int> eRROR_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_DESCRIPCION", DbType="NVarChar(MAX)")] ref string eRROR_DESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD, nOMBRE, pREPARACION, tIPO_ALCOHOL, rUTA, vASO, cATEGORIA, iNGREDIENTES, mEDIDAS, uSUARIOID, eRROR_ID, eRROR_DESCRIPCION);
+			eRROR_ID = ((System.Nullable<int>)(result.GetParameterValue(10)));
+			eRROR_DESCRIPCION = ((string)(result.GetParameterValue(11)));
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -139,17 +141,6 @@ namespace BebidasBackend.AccesoDatos
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Login")]
-		public int sp_Login([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CORREO_ELECTRONICO", DbType="NVarChar(50)")] string cORREO_ELECTRONICO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PASSWORD", DbType="NVarChar(MAX)")] string pASSWORD, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> id_usuario, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> estado, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] ref string nombre, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] ref string apellidos)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), cORREO_ELECTRONICO, pASSWORD, id_usuario, estado, nombre, apellidos);
-			id_usuario = ((System.Nullable<int>)(result.GetParameterValue(2)));
-			estado = ((System.Nullable<int>)(result.GetParameterValue(3)));
-			nombre = ((string)(result.GetParameterValue(4)));
-			apellidos = ((string)(result.GetParameterValue(5)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INGRESAR_USUARIO")]
 		public int SP_INGRESAR_USUARIO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="NOMBRE", DbType="NVarChar(50)")] string nOMBRE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="APELLIDOS", DbType="NVarChar(50)")] string aPELLIDOS, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CORREO_ELECTRONICO", DbType="NVarChar(MAX)")] string cORREO_ELECTRONICO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PASSWORD", DbType="NVarChar(MAX)")] string pASSWORD, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="NUMERO_VERIFICACION", DbType="NVarChar(MAX)")] string nUMERO_VERIFICACION, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_RETURN", DbType="Int")] ref System.Nullable<int> iD_RETURN, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_ID", DbType="Int")] ref System.Nullable<int> eRROR_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_DESCRIPCION", DbType="NVarChar(MAX)")] ref string eRROR_DESCRIPCION)
 		{
@@ -157,23 +148,6 @@ namespace BebidasBackend.AccesoDatos
 			iD_RETURN = ((System.Nullable<int>)(result.GetParameterValue(5)));
 			eRROR_ID = ((System.Nullable<int>)(result.GetParameterValue(6)));
 			eRROR_DESCRIPCION = ((string)(result.GetParameterValue(7)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_VERIFICAR_FAVORITO")]
-		public int SP_VERIFICAR_FAVORITO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="USUARIO_ID", DbType="BigInt")] System.Nullable<long> uSUARIO_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="BEBIDA_ID", DbType="BigInt")] System.Nullable<long> bEBIDA_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RESULTADO", DbType="Int")] ref System.Nullable<int> rESULTADO)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), uSUARIO_ID, bEBIDA_ID, rESULTADO);
-			rESULTADO = ((System.Nullable<int>)(result.GetParameterValue(2)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_BEBIDA")]
-		public int SP_ACTUALIZAR_BEBIDA([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID", DbType="BigInt")] System.Nullable<long> iD, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="NOMBRE", DbType="NVarChar(50)")] string nOMBRE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PREPARACION", DbType="NVarChar(200)")] string pREPARACION, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TIPO_ALCOHOL", DbType="VarChar(100)")] string tIPO_ALCOHOL, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RUTA", DbType="VarChar(255)")] string rUTA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="VASO", DbType="VarChar(50)")] string vASO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CATEGORIA", DbType="VarChar(50)")] string cATEGORIA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="INGREDIENTES", DbType="VarChar(255)")] string iNGREDIENTES, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MEDIDAS", DbType="VarChar(255)")] string mEDIDAS, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="USUARIOID", DbType="Int")] System.Nullable<int> uSUARIOID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_ID", DbType="Int")] ref System.Nullable<int> eRROR_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_DESCRIPCION", DbType="NVarChar(MAX)")] ref string eRROR_DESCRIPCION)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD, nOMBRE, pREPARACION, tIPO_ALCOHOL, rUTA, vASO, cATEGORIA, iNGREDIENTES, mEDIDAS, uSUARIOID, eRROR_ID, eRROR_DESCRIPCION);
-			eRROR_ID = ((System.Nullable<int>)(result.GetParameterValue(10)));
-			eRROR_DESCRIPCION = ((string)(result.GetParameterValue(11)));
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -187,11 +161,15 @@ namespace BebidasBackend.AccesoDatos
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_BEBIDAS")]
-		public ISingleResult<SP_OBTENER_BEBIDASResult> SP_OBTENER_BEBIDAS()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Login")]
+		public int sp_Login([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CORREO_ELECTRONICO", DbType="NVarChar(50)")] string cORREO_ELECTRONICO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PASSWORD", DbType="NVarChar(MAX)")] string pASSWORD, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> id_usuario, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> estado, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] ref string nombre, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] ref string apellidos)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((ISingleResult<SP_OBTENER_BEBIDASResult>)(result.ReturnValue));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), cORREO_ELECTRONICO, pASSWORD, id_usuario, estado, nombre, apellidos);
+			id_usuario = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			estado = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			nombre = ((string)(result.GetParameterValue(4)));
+			apellidos = ((string)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_FAVORITOS_USUARIOS")]
@@ -200,211 +178,29 @@ namespace BebidasBackend.AccesoDatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioId);
 			return ((ISingleResult<SP_OBTENER_FAVORITOS_USUARIOSResult>)(result.ReturnValue));
 		}
-	}
-	
-	public partial class SP_OBTENER_BEBIDASResult
-	{
 		
-		private long _bebidaid;
-		
-		private string _bebidanombre;
-		
-		private string _bebidapreparacion;
-		
-		private string _bebidaimgruta;
-		
-		private string _bebidatipoalcohol;
-		
-		private string _bebidavaso;
-		
-		private string _bebidacategoria;
-		
-		private string _bebidaingredientes;
-		
-		private string _bebidamedidas;
-		
-		private int _bebidausuarioid;
-		
-		private string _favoritosUsuarios;
-		
-		public SP_OBTENER_BEBIDASResult()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_TODAS_BEBIDAS")]
+		public ISingleResult<SP_OBTENER_TODAS_BEBIDASResult> SP_OBTENER_TODAS_BEBIDAS([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_ID", DbType="Int")] ref System.Nullable<int> eRROR_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERROR_DESCRIPCION", DbType="NVarChar(MAX)")] ref string eRROR_DESCRIPCION)
 		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), eRROR_ID, eRROR_DESCRIPCION);
+			eRROR_ID = ((System.Nullable<int>)(result.GetParameterValue(0)));
+			eRROR_DESCRIPCION = ((string)(result.GetParameterValue(1)));
+			return ((ISingleResult<SP_OBTENER_TODAS_BEBIDASResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaid", DbType="BigInt NOT NULL")]
-		public long bebidaid
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_VERIFICAR_FAVORITO")]
+		public int SP_VERIFICAR_FAVORITO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="USUARIO_ID", DbType="BigInt")] System.Nullable<long> uSUARIO_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="BEBIDA_ID", DbType="BigInt")] System.Nullable<long> bEBIDA_ID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RESULTADO", DbType="Int")] ref System.Nullable<int> rESULTADO)
 		{
-			get
-			{
-				return this._bebidaid;
-			}
-			set
-			{
-				if ((this._bebidaid != value))
-				{
-					this._bebidaid = value;
-				}
-			}
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), uSUARIO_ID, bEBIDA_ID, rESULTADO);
+			rESULTADO = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidanombre", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string bebidanombre
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_BEBIDAS")]
+		public ISingleResult<SP_OBTENER_BEBIDASResult> SP_OBTENER_BEBIDAS()
 		{
-			get
-			{
-				return this._bebidanombre;
-			}
-			set
-			{
-				if ((this._bebidanombre != value))
-				{
-					this._bebidanombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidapreparacion", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string bebidapreparacion
-		{
-			get
-			{
-				return this._bebidapreparacion;
-			}
-			set
-			{
-				if ((this._bebidapreparacion != value))
-				{
-					this._bebidapreparacion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaimgruta", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string bebidaimgruta
-		{
-			get
-			{
-				return this._bebidaimgruta;
-			}
-			set
-			{
-				if ((this._bebidaimgruta != value))
-				{
-					this._bebidaimgruta = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidatipoalcohol", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string bebidatipoalcohol
-		{
-			get
-			{
-				return this._bebidatipoalcohol;
-			}
-			set
-			{
-				if ((this._bebidatipoalcohol != value))
-				{
-					this._bebidatipoalcohol = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidavaso", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string bebidavaso
-		{
-			get
-			{
-				return this._bebidavaso;
-			}
-			set
-			{
-				if ((this._bebidavaso != value))
-				{
-					this._bebidavaso = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidacategoria", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string bebidacategoria
-		{
-			get
-			{
-				return this._bebidacategoria;
-			}
-			set
-			{
-				if ((this._bebidacategoria != value))
-				{
-					this._bebidacategoria = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaingredientes", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string bebidaingredientes
-		{
-			get
-			{
-				return this._bebidaingredientes;
-			}
-			set
-			{
-				if ((this._bebidaingredientes != value))
-				{
-					this._bebidaingredientes = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidamedidas", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string bebidamedidas
-		{
-			get
-			{
-				return this._bebidamedidas;
-			}
-			set
-			{
-				if ((this._bebidamedidas != value))
-				{
-					this._bebidamedidas = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidausuarioid", DbType="Int NOT NULL")]
-		public int bebidausuarioid
-		{
-			get
-			{
-				return this._bebidausuarioid;
-			}
-			set
-			{
-				if ((this._bebidausuarioid != value))
-				{
-					this._bebidausuarioid = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_favoritosUsuarios", DbType="NVarChar(4000)")]
-		public string favoritosUsuarios
-		{
-			get
-			{
-				return this._favoritosUsuarios;
-			}
-			set
-			{
-				if ((this._favoritosUsuarios != value))
-				{
-					this._favoritosUsuarios = value;
-				}
-			}
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<SP_OBTENER_BEBIDASResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -591,6 +387,400 @@ namespace BebidasBackend.AccesoDatos
 				if ((this._bebidausuarioid != value))
 				{
 					this._bebidausuarioid = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_TODAS_BEBIDASResult
+	{
+		
+		private long _bebidaid;
+		
+		private string _bebidanombre;
+		
+		private string _bebidapreparacion;
+		
+		private string _bebidaimgruta;
+		
+		private string _bebidatipoalcohol;
+		
+		private string _bebidavaso;
+		
+		private string _bebidacategoria;
+		
+		private string _bebidaingredientes;
+		
+		private string _bebidamedidas;
+		
+		private int _bebidausuarioid;
+		
+		public SP_OBTENER_TODAS_BEBIDASResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaid", DbType="BigInt NOT NULL")]
+		public long bebidaid
+		{
+			get
+			{
+				return this._bebidaid;
+			}
+			set
+			{
+				if ((this._bebidaid != value))
+				{
+					this._bebidaid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidanombre", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidanombre
+		{
+			get
+			{
+				return this._bebidanombre;
+			}
+			set
+			{
+				if ((this._bebidanombre != value))
+				{
+					this._bebidanombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidapreparacion", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string bebidapreparacion
+		{
+			get
+			{
+				return this._bebidapreparacion;
+			}
+			set
+			{
+				if ((this._bebidapreparacion != value))
+				{
+					this._bebidapreparacion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaimgruta", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidaimgruta
+		{
+			get
+			{
+				return this._bebidaimgruta;
+			}
+			set
+			{
+				if ((this._bebidaimgruta != value))
+				{
+					this._bebidaimgruta = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidatipoalcohol", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string bebidatipoalcohol
+		{
+			get
+			{
+				return this._bebidatipoalcohol;
+			}
+			set
+			{
+				if ((this._bebidatipoalcohol != value))
+				{
+					this._bebidatipoalcohol = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidavaso", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidavaso
+		{
+			get
+			{
+				return this._bebidavaso;
+			}
+			set
+			{
+				if ((this._bebidavaso != value))
+				{
+					this._bebidavaso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidacategoria", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidacategoria
+		{
+			get
+			{
+				return this._bebidacategoria;
+			}
+			set
+			{
+				if ((this._bebidacategoria != value))
+				{
+					this._bebidacategoria = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaingredientes", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidaingredientes
+		{
+			get
+			{
+				return this._bebidaingredientes;
+			}
+			set
+			{
+				if ((this._bebidaingredientes != value))
+				{
+					this._bebidaingredientes = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidamedidas", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidamedidas
+		{
+			get
+			{
+				return this._bebidamedidas;
+			}
+			set
+			{
+				if ((this._bebidamedidas != value))
+				{
+					this._bebidamedidas = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidausuarioid", DbType="Int NOT NULL")]
+		public int bebidausuarioid
+		{
+			get
+			{
+				return this._bebidausuarioid;
+			}
+			set
+			{
+				if ((this._bebidausuarioid != value))
+				{
+					this._bebidausuarioid = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_BEBIDASResult
+	{
+		
+		private long _bebidaid;
+		
+		private string _bebidanombre;
+		
+		private string _bebidapreparacion;
+		
+		private string _bebidaimgruta;
+		
+		private string _bebidatipoalcohol;
+		
+		private string _bebidavaso;
+		
+		private string _bebidacategoria;
+		
+		private string _bebidaingredientes;
+		
+		private string _bebidamedidas;
+		
+		private long _bebidausuarioid;
+		
+		private string _favoritosUsuarios;
+		
+		public SP_OBTENER_BEBIDASResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaid", DbType="BigInt NOT NULL")]
+		public long bebidaid
+		{
+			get
+			{
+				return this._bebidaid;
+			}
+			set
+			{
+				if ((this._bebidaid != value))
+				{
+					this._bebidaid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidanombre", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidanombre
+		{
+			get
+			{
+				return this._bebidanombre;
+			}
+			set
+			{
+				if ((this._bebidanombre != value))
+				{
+					this._bebidanombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidapreparacion", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string bebidapreparacion
+		{
+			get
+			{
+				return this._bebidapreparacion;
+			}
+			set
+			{
+				if ((this._bebidapreparacion != value))
+				{
+					this._bebidapreparacion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaimgruta", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidaimgruta
+		{
+			get
+			{
+				return this._bebidaimgruta;
+			}
+			set
+			{
+				if ((this._bebidaimgruta != value))
+				{
+					this._bebidaimgruta = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidatipoalcohol", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string bebidatipoalcohol
+		{
+			get
+			{
+				return this._bebidatipoalcohol;
+			}
+			set
+			{
+				if ((this._bebidatipoalcohol != value))
+				{
+					this._bebidatipoalcohol = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidavaso", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidavaso
+		{
+			get
+			{
+				return this._bebidavaso;
+			}
+			set
+			{
+				if ((this._bebidavaso != value))
+				{
+					this._bebidavaso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidacategoria", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string bebidacategoria
+		{
+			get
+			{
+				return this._bebidacategoria;
+			}
+			set
+			{
+				if ((this._bebidacategoria != value))
+				{
+					this._bebidacategoria = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidaingredientes", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidaingredientes
+		{
+			get
+			{
+				return this._bebidaingredientes;
+			}
+			set
+			{
+				if ((this._bebidaingredientes != value))
+				{
+					this._bebidaingredientes = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidamedidas", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string bebidamedidas
+		{
+			get
+			{
+				return this._bebidamedidas;
+			}
+			set
+			{
+				if ((this._bebidamedidas != value))
+				{
+					this._bebidamedidas = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bebidausuarioid", DbType="BigInt NOT NULL")]
+		public long bebidausuarioid
+		{
+			get
+			{
+				return this._bebidausuarioid;
+			}
+			set
+			{
+				if ((this._bebidausuarioid != value))
+				{
+					this._bebidausuarioid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_favoritosUsuarios", DbType="NVarChar(4000)")]
+		public string favoritosUsuarios
+		{
+			get
+			{
+				return this._favoritosUsuarios;
+			}
+			set
+			{
+				if ((this._favoritosUsuarios != value))
+				{
+					this._favoritosUsuarios = value;
 				}
 			}
 		}

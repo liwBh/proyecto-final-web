@@ -1,16 +1,24 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getLocalStorage } from "../Redux/Auth/AuthSlice";
 
 const usePrivateRoute = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
+  //recuperar datos de sesion de navegador
+  const { user } = useSelector((state) => state.auth);
+ 
   useEffect(() => {
-    if (!user) {
+
+    dispatch( getLocalStorage() );
+
+    if (!user && !localStorage.getItem("user")) {
       navigate("/");
     }
-  }, [user, navigate]);
+    // eslint-disable-next-line
+  }, []);
 
 };
 

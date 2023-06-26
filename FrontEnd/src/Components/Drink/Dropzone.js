@@ -53,7 +53,7 @@ const Dropzone = ({ setMeDrink, meDrink }) => {
         }))
       );
 
-      console.log(acceptedFiles[0]);
+      //console.log(acceptedFiles[0]);
       setimageFile(acceptedFiles[0]);
     }
   }, []);
@@ -84,41 +84,52 @@ const Dropzone = ({ setMeDrink, meDrink }) => {
     </div>
   ));
 
-  const handleUrl = () => {
+  // Función para convertir el archivo de imagen a base64
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleUrl = async() => {
     // Obtener la extensión de la imagen
     const extension = imageFile.name.split(".").pop().toLowerCase();
     // Crear un nombre único para la imagen
     const name = `image-${uuidv4()}.${extension}`;
 
-    //console.log(name);
-    //console.log(imageFile);
+    if (imageFile) {
+      try {
+        const base64Image = await convertImageToBase64(imageFile);
+        //console.log(base64Image); // imagen en formato base64
 
-    //const uploadImage = { ...imageFile, name: name, path: name };
-
-    const uploadImage = new File([imageFile], name, {
-      type: imageFile.type,
-      lastModified: imageFile.lastModified,
-      lastModifiedDate: imageFile.lastModifiedDate,
-    });
+        const uploadImage = {
+          name: name,
+          path: imageFile.path,
+          type: imageFile.type,
+          base64Data: base64Image,
+        };
     
-    uploadImage.path = name;
-    
-
-    setMeDrink({...meDrink,
-      image: uploadImage,
-    });
-
-    console.log(meDrink)
-
-    //console.log(uploadImage);
+        setMeDrink({ ...meDrink, image: uploadImage });
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   useEffect(() => {
-    
     if (imageFile) {
       handleUrl();
     }
-
     // eslint-disable-next-line
   }, [imageFile]);
 
@@ -142,9 +153,6 @@ const Dropzone = ({ setMeDrink, meDrink }) => {
         <div className="d-flex justify-content-center align-items-center mt-3">
           {image}
         </div>
-
-
-
       </div>
     </>
   );

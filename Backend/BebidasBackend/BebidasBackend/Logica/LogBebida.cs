@@ -14,8 +14,7 @@ namespace BebidasBackend.Logica
 {
 	public class LogBebida
 	{
-		
-
+		public static string connection = "Data Source=LiwBH-pc\\SQLEXPRESS;Initial Catalog=bdbebidas;Integrated Security=True";
 		public ResObtenerBebidas obtenerBebidas(ReqObtenerBebidas req)
 		{
 			Int16 tipoDeTransaccion = 0;
@@ -26,15 +25,11 @@ namespace BebidasBackend.Logica
 
 			try
 			{
-
-
-				conexionbdDataContext miLinq = new conexionbdDataContext();
+				conexionbdDataContext miLinq = new conexionbdDataContext(connection);
 				List<SP_OBTENER_BEBIDASResult> listaDeLinq = new List<SP_OBTENER_BEBIDASResult>();
 				listaDeLinq = miLinq.SP_OBTENER_BEBIDAS().ToList();
 				res.ListaDeBebidas = this.crearListaDeBebidas(listaDeLinq);
 				res.result = true;
-
-
 			}
 			catch (Exception ex)
 			{
@@ -93,18 +88,16 @@ namespace BebidasBackend.Logica
 			unaBebida.name = tipoComplejo.bebidanombre;
 			unaBebida.measures = listaMedidas;
 			unaBebida.ingredients = listaIng;
-			unaBebida.image = tipoComplejo.bebidaimgruta;
+			unaBebida.ruta = tipoComplejo.bebidaimgruta;
 			unaBebida.category = tipoComplejo.bebidacategoria;
 			unaBebida.alcoholic = tipoComplejo.bebidatipoalcohol;
 			unaBebida.preparation = tipoComplejo.bebidapreparacion;
 			unaBebida.glass = tipoComplejo.bebidavaso;
 			unaBebida.likes = listaLike;
-			unaBebida.userId = tipoComplejo.bebidausuarioid;
+			unaBebida.userId = (int)tipoComplejo.bebidausuarioid;
 
 			return unaBebida;
 		}
-
-
 
 		private Bebida crearBebidasFavoritas(SP_OBTENER_FAVORITOS_USUARIOSResult tipoComplejo)
 		{
@@ -121,16 +114,17 @@ namespace BebidasBackend.Logica
 			unaBebida.name = tipoComplejo.bebidanombre;
 			unaBebida.measures = listaMedidas;
 			unaBebida.ingredients = listaIng;
-			unaBebida.image = tipoComplejo.bebidaimgruta;
+			unaBebida.ruta = tipoComplejo.bebidaimgruta;
 			unaBebida.category = tipoComplejo.bebidacategoria;
 			unaBebida.alcoholic = tipoComplejo.bebidatipoalcohol;
+			unaBebida.preparation = tipoComplejo.bebidapreparacion;
 			unaBebida.glass = tipoComplejo.bebidavaso;
-			unaBebida.userId = tipoComplejo.bebidausuarioid;
+			unaBebida.userId = (int)tipoComplejo.bebidausuarioid;
 
 			return unaBebida;
 		}
 
-		public ResVincularFavorito vincularFavoritos( ReqVincularFavorito req)
+		public ResVincularFavorito vincularFavoritos(ReqVincularFavorito req)
 		{
 			int? resultado = 0;
 			ResVincularFavorito res = new ResVincularFavorito();
@@ -148,15 +142,12 @@ namespace BebidasBackend.Logica
 				}
 				else
 				{
-					
 
-					if(req.idBebida == 0)
+					if (req.idBebida == 0)
 					{
 						res.result = false;
 						res.errors.Add("No se agrego Bebida");
 					}
-
-				
 
 					if (req.idUsuario == 0)
 					{
@@ -172,7 +163,7 @@ namespace BebidasBackend.Logica
 					}
 					else
 					{
-					
+
 
 
 						//No hay errores
@@ -185,15 +176,15 @@ namespace BebidasBackend.Logica
 						int intNumeroVerificacion = rdm.Next();
 
 
-						conexionbdDataContext miLinq = new conexionbdDataContext();
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
 						miLinq.SP_VERIFICAR_FAVORITO(req.idUsuario, req.idBebida, ref resultado);
 
-						
+
 
 						if (resultado == 0)
 						{
 
-							res.result = true;
+							res.result = false;
 							tipoDeTransaccion = 0;
 							errorId = 0;
 						}
@@ -201,7 +192,7 @@ namespace BebidasBackend.Logica
 						{
 							errorId = idError;
 							descripcionError = errorBD;
-							res.result = false;
+							res.result = true;
 							res.errors.Add(errorBD);
 							tipoDeTransaccion = 1;
 						}
@@ -239,7 +230,7 @@ namespace BebidasBackend.Logica
 			{
 
 
-				conexionbdDataContext miLinq = new conexionbdDataContext();
+				conexionbdDataContext miLinq = new conexionbdDataContext(connection);
 				List<SP_OBTENER_FAVORITOS_USUARIOSResult> listaDeLinq = new List<SP_OBTENER_FAVORITOS_USUARIOSResult>();
 				listaDeLinq = miLinq.SP_OBTENER_FAVORITOS_USUARIOS(id).ToList();
 				res.ListaDeBebidas = this.crearListaDeFavoritos(listaDeLinq);
@@ -261,7 +252,6 @@ namespace BebidasBackend.Logica
 			return res;
 		}
 
-
 		public ResIngresarBebida ingresarBebida(ReqIngresarBebida req)
 		{
 			ResIngresarBebida res = new ResIngresarBebida();
@@ -281,7 +271,7 @@ namespace BebidasBackend.Logica
 				{
 					if (String.IsNullOrEmpty(req.laBebida.name))
 					{
-						
+
 						res.result = false;
 						res.errors.Add("Name faltante");
 					}
@@ -291,24 +281,20 @@ namespace BebidasBackend.Logica
 						res.errors.Add("Preparacion faltante");
 					}
 
-
-					
 					if (req.laBebida.measures == null)
 					{
 						res.result = false;
 						res.errors.Add("La medida no se agregó");
 					}
-					
+
 
 					if (req.laBebida.ingredients == null)
 					{
 						res.result = false;
 						res.errors.Add("El ingrediente no se agregó");
 					}
-					
 
-
-					if (String.IsNullOrEmpty(req.laBebida.image))
+					if (String.IsNullOrEmpty(req.laBebida.ruta))
 					{
 						res.result = false;
 						res.errors.Add("image faltante");
@@ -326,7 +312,7 @@ namespace BebidasBackend.Logica
 						res.errors.Add("alcoholic faltante");
 					}
 
-					
+
 					if (String.IsNullOrEmpty(req.laBebida.glass))
 					{
 						res.result = false;
@@ -357,16 +343,13 @@ namespace BebidasBackend.Logica
 						}
 
 						List<string> ingredientes = req.laBebida.ingredients;
-						
-							string concatenatedIngredients = req.laBebida.ingredients[0].ToString();
 
-							for (int i = 1; i < req.laBebida.ingredients.Count; i++)
-							{
-								concatenatedIngredients += "-" + req.laBebida.ingredients[i].ToString();
-							}
+						string concatenatedIngredients = req.laBebida.ingredients[0].ToString();
 
-
-						
+						for (int i = 1; i < req.laBebida.ingredients.Count; i++)
+						{
+							concatenatedIngredients += "-" + req.laBebida.ingredients[i].ToString();
+						}
 
 						//No hay errores
 						//Mandar a AD
@@ -376,14 +359,14 @@ namespace BebidasBackend.Logica
 
 						Random rdm = new Random();
 						int intNumeroVerificacion = rdm.Next();
-					
 
-						conexionbdDataContext miLinq = new conexionbdDataContext();
-						miLinq.SP_INSERTAR_BEBIDA(req.laBebida.name, req.laBebida.preparation, req.laBebida.alcoholic, req.laBebida.image, req.laBebida.glass, req.laBebida.category, concatenatedIngredients, concatenatedMeasures,  req.laBebida.userId, ref idReturn, ref idError, ref errorBD);
+
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
+						miLinq.SP_INSERTAR_BEBIDA(req.laBebida.name, req.laBebida.preparation, req.laBebida.alcoholic, req.laBebida.ruta, req.laBebida.glass, req.laBebida.category, concatenatedIngredients, concatenatedMeasures, req.laBebida.userId, ref idReturn, ref idError, ref errorBD);
 
 						if (idError == 0)
 						{
-						
+
 							res.result = true;
 							tipoTransccion = (Int16)enumTipo.exitoso;
 							errorId = 0;
@@ -418,8 +401,6 @@ namespace BebidasBackend.Logica
 			return res;
 		}
 
-	
-
 		public ResActualizarBebida actualizarBebida(ReqActualizarBebida req)
 		{
 			ResActualizarBebida res = new ResActualizarBebida();
@@ -439,11 +420,10 @@ namespace BebidasBackend.Logica
 				}
 				else
 				{
-					if (req.laBebida.id == 0  )
+					if (req.laBebida.id == 0)
 					{
-						//Falta el id
 						res.result = false;
-						res.errors.Add("id bebida faltante");
+						res.errors.Add("Ningún ID enviado");
 					}
 					if (String.IsNullOrEmpty(req.laBebida.name))
 					{
@@ -461,14 +441,12 @@ namespace BebidasBackend.Logica
 						res.result = false;
 						res.errors.Add("La medida no se agregó");
 					}
-
-
 					if (req.laBebida.ingredients == null)
 					{
 						res.result = false;
 						res.errors.Add("El ingrediente no se agregó");
 					}
-					if (String.IsNullOrEmpty(req.laBebida.image))
+					if (String.IsNullOrEmpty(req.laBebida.ruta))
 					{
 						res.result = false;
 						res.errors.Add("image faltante");
@@ -531,14 +509,14 @@ namespace BebidasBackend.Logica
 						int? idReturn = 0;
 						int? idError = 0;
 						string errorBD = "";
-					
-						conexionbdDataContext miLinq = new conexionbdDataContext();
-						miLinq.SP_ACTUALIZAR_BEBIDA(req.laBebida.id, req.laBebida.name, req.laBebida.preparation, req.laBebida.alcoholic, req.laBebida.image, req.laBebida.glass, req.laBebida.category, concatenatedIngredients, concatenatedMeasures, req.laBebida.userId, ref idError, ref errorBD);
+
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
+						miLinq.SP_ACTUALIZAR_BEBIDA(req.laBebida.id, req.laBebida.name, req.laBebida.preparation, req.laBebida.alcoholic, req.laBebida.ruta, req.laBebida.glass, req.laBebida.category, concatenatedIngredients, concatenatedMeasures, req.laBebida.userId, ref idError, ref errorBD);
 
 
 						if (idError == 0)
 						{
-							
+
 							res.result = true;
 							tipoTransccion = (Int16)enumTipo.exitoso;
 							errorId = 0;
@@ -575,6 +553,7 @@ namespace BebidasBackend.Logica
 			return res;
 
 		}
+
 		public ResEliminarBebida eliminarBebida(ReqEliminarBebida req)
 		{
 			ResEliminarBebida res = new ResEliminarBebida();
@@ -594,9 +573,9 @@ namespace BebidasBackend.Logica
 				}
 				else
 				{
-					if (req.laBebida.id == null)
+					if (req.laBebida.id == 0)
 					{
-						
+
 						res.result = false;
 						res.errors.Add("Ningún ID enviado");
 					}
@@ -614,14 +593,14 @@ namespace BebidasBackend.Logica
 						int? idError = 0;
 						string errorBD = "";
 
-						conexionbdDataContext miLinq = new conexionbdDataContext();
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
 						miLinq.SP_ELIMINAR_BEBIDA(req.laBebida.id, ref errorId, ref descripcionError);
 
 
 						if (idError == 0)
 						{
-							
-						
+
+
 							res.result = true;
 							tipoTransccion = (Int16)enumTipo.exitoso;
 							errorId = 0;

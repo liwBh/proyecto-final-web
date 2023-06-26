@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo-2.png";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import {
@@ -25,15 +25,18 @@ import {
   SweetAlertSuccessRedux,
 } from "../SweetAlert/SweetAlert";
 
+
 const Header = () => {
   const { message, errorRedux, user } = useSelector((state) => ({
     ...state.auth,
   }));
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(loginOutUser());
+    navigate("/");
   };
 
   useEffect(() => {

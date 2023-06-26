@@ -16,7 +16,8 @@ namespace ForoBackend.Logica
 {
 	public class Utilitarios
 	{
-        private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("tu89geji340t89u2");
+		public static string connection = "Data Source=LiwBH-pc\\SQLEXPRESS;Initial Catalog=bdbebidas;Integrated Security=True";
+		private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("tu89geji340t89u2");
 
         // This constant is used to determine the keysize of the encryption algorithm.
         private const int keysize = 256;
@@ -24,7 +25,7 @@ namespace ForoBackend.Logica
         public static void bitacorear(string laClase, string elMetodo, Int16 tipo, int errorId,string descripcion, string request, string response) {
 			try
 			{
-				conexionbdDataContext miLinq = new conexionbdDataContext();
+				conexionbdDataContext miLinq = new conexionbdDataContext(connection);
 				//miLinq.SP_INSERTAR_BITACORA(laClase,elMetodo,tipo,errorId,descripcion,request,response);
 			}
 			catch {

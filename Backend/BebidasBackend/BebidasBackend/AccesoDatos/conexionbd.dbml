@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bdbebidas" Class="conexionbdDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=MISTICO\SQLEXPRESS03;Initial Catalog=bdbebidas;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="bdbebidasConnectionString3" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_ABRIR_SESION" Method="SP_ABRIR_SESION">
     <Parameter Name="SESION" Parameter="sESION" Type="System.String" DbType="NVarChar(MAX)" />
     <Parameter Name="USUARIO" Parameter="uSUARIO" Type="System.Int64" DbType="BigInt" />
@@ -16,6 +15,21 @@
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Parameter Name="FILASACTUALIZADAS" Parameter="fILASACTUALIZADAS" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_BEBIDA" Method="SP_ACTUALIZAR_BEBIDA">
+    <Parameter Name="ID" Parameter="iD" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="NOMBRE" Parameter="nOMBRE" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="PREPARACION" Parameter="pREPARACION" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="TIPO_ALCOHOL" Parameter="tIPO_ALCOHOL" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="RUTA" Parameter="rUTA" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="VASO" Parameter="vASO" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CATEGORIA" Parameter="cATEGORIA" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="INGREDIENTES" Parameter="iNGREDIENTES" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="MEDIDAS" Parameter="mEDIDAS" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="USUARIOID" Parameter="uSUARIOID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERROR_ID" Parameter="eRROR_ID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERROR_DESCRIPCION" Parameter="eRROR_DESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.SP_ACTUALIZAR_USUARIO" Method="SP_ACTUALIZAR_USUARIO">
@@ -62,15 +76,6 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.sp_Login" Method="sp_Login">
-    <Parameter Name="CORREO_ELECTRONICO" Parameter="cORREO_ELECTRONICO" Type="System.String" DbType="NVarChar(50)" />
-    <Parameter Name="PASSWORD" Parameter="pASSWORD" Type="System.String" DbType="NVarChar(MAX)" />
-    <Parameter Name="id_usuario" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="estado" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="nombre" Type="System.String" DbType="NVarChar(50)" Direction="InOut" />
-    <Parameter Name="apellidos" Type="System.String" DbType="NVarChar(50)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_INGRESAR_USUARIO" Method="SP_INGRESAR_USUARIO">
     <Parameter Name="NOMBRE" Parameter="nOMBRE" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="APELLIDOS" Parameter="aPELLIDOS" Type="System.String" DbType="NVarChar(50)" />
@@ -78,27 +83,6 @@
     <Parameter Name="PASSWORD" Parameter="pASSWORD" Type="System.String" DbType="NVarChar(MAX)" />
     <Parameter Name="NUMERO_VERIFICACION" Parameter="nUMERO_VERIFICACION" Type="System.String" DbType="NVarChar(MAX)" />
     <Parameter Name="ID_RETURN" Parameter="iD_RETURN" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERROR_ID" Parameter="eRROR_ID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERROR_DESCRIPCION" Parameter="eRROR_DESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.SP_VERIFICAR_FAVORITO" Method="SP_VERIFICAR_FAVORITO">
-    <Parameter Name="USUARIO_ID" Parameter="uSUARIO_ID" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="BEBIDA_ID" Parameter="bEBIDA_ID" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="RESULTADO" Parameter="rESULTADO" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.SP_ACTUALIZAR_BEBIDA" Method="SP_ACTUALIZAR_BEBIDA">
-    <Parameter Name="ID" Parameter="iD" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="NOMBRE" Parameter="nOMBRE" Type="System.String" DbType="NVarChar(50)" />
-    <Parameter Name="PREPARACION" Parameter="pREPARACION" Type="System.String" DbType="NVarChar(200)" />
-    <Parameter Name="TIPO_ALCOHOL" Parameter="tIPO_ALCOHOL" Type="System.String" DbType="VarChar(100)" />
-    <Parameter Name="RUTA" Parameter="rUTA" Type="System.String" DbType="VarChar(255)" />
-    <Parameter Name="VASO" Parameter="vASO" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="CATEGORIA" Parameter="cATEGORIA" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="INGREDIENTES" Parameter="iNGREDIENTES" Type="System.String" DbType="VarChar(255)" />
-    <Parameter Name="MEDIDAS" Parameter="mEDIDAS" Type="System.String" DbType="VarChar(255)" />
-    <Parameter Name="USUARIOID" Parameter="uSUARIOID" Type="System.Int32" DbType="Int" />
     <Parameter Name="ERROR_ID" Parameter="eRROR_ID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERROR_DESCRIPCION" Parameter="eRROR_DESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
@@ -118,20 +102,14 @@
     <Parameter Name="ERROR_DESCRIPCION" Parameter="eRROR_DESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_OBTENER_BEBIDAS" Method="SP_OBTENER_BEBIDAS">
-    <ElementType Name="SP_OBTENER_BEBIDASResult">
-      <Column Name="bebidaid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="bebidanombre" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidapreparacion" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidaimgruta" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidatipoalcohol" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidavaso" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidacategoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidaingredientes" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidamedidas" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="bebidausuarioid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="favoritosUsuarios" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
-    </ElementType>
+  <Function Name="dbo.sp_Login" Method="sp_Login">
+    <Parameter Name="CORREO_ELECTRONICO" Parameter="cORREO_ELECTRONICO" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="PASSWORD" Parameter="pASSWORD" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="id_usuario" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="estado" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="nombre" Type="System.String" DbType="NVarChar(50)" Direction="InOut" />
+    <Parameter Name="apellidos" Type="System.String" DbType="NVarChar(50)" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.SP_OBTENER_FAVORITOS_USUARIOS" Method="SP_OBTENER_FAVORITOS_USUARIOS">
     <Parameter Name="usuarioId" Type="System.Int32" DbType="Int" />
@@ -146,6 +124,43 @@
       <Column Name="bebidaingredientes" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="bebidamedidas" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="bebidausuarioid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_OBTENER_TODAS_BEBIDAS" Method="SP_OBTENER_TODAS_BEBIDAS">
+    <Parameter Name="ERROR_ID" Parameter="eRROR_ID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERROR_DESCRIPCION" Parameter="eRROR_DESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <ElementType Name="SP_OBTENER_TODAS_BEBIDASResult">
+      <Column Name="bebidaid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="bebidanombre" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidapreparacion" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidaimgruta" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidatipoalcohol" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidavaso" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidacategoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidaingredientes" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidamedidas" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidausuarioid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_VERIFICAR_FAVORITO" Method="SP_VERIFICAR_FAVORITO">
+    <Parameter Name="USUARIO_ID" Parameter="uSUARIO_ID" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="BEBIDA_ID" Parameter="bEBIDA_ID" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="RESULTADO" Parameter="rESULTADO" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_OBTENER_BEBIDAS" Method="SP_OBTENER_BEBIDAS">
+    <ElementType Name="SP_OBTENER_BEBIDASResult">
+      <Column Name="bebidaid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="bebidanombre" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidapreparacion" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidaimgruta" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidatipoalcohol" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidavaso" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidacategoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidaingredientes" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidamedidas" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="bebidausuarioid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="favoritosUsuarios" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

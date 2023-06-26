@@ -30,7 +30,6 @@ export const fetchCategoryCocktails = createAsyncThunk(
 export const fetchSearchCocktails = createAsyncThunk(
   "cocktails/fetchSearchCocktails",
   async ({ url }) => {
-    console.log(url);
     return fetch(url).then((res) => res.json());
   }
 );

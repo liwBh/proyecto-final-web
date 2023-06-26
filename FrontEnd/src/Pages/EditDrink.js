@@ -24,47 +24,31 @@ import {
   SweetAlertError,
   SweetAlertSuccessRedux,
 } from "../SweetAlert/SweetAlert";
-import { getDrinks, updateDrink, clearState } from "../Redux/Drinks/DrinkSlice";
+import { getDrinks, updateDrink, clearState, setCurrentDrink } from "../Redux/Drinks/DrinkSlice";
 
 const EditDrink = () => {
   usePrivateRoute();
-
-  const { user } = useSelector((state) => state.auth);
-
-  const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  if (!id || !user) {
+  const { id } = useParams();
+
+  if (!id) {
     //si no existe el id o usuario
     navigate("/");
   }
 
-  const { loading, message, errorRedux, drinks } = useSelector((state) => ({
+  const { user } = useSelector((state) => state.auth);
+  const { loading, message, errorRedux, drinks, drinkCurrent } = useSelector((state) => ({
     ...state.drinks,
   }));
 
-  const dispatch = useDispatch();
+  const localStorageDrink = () => {
 
-  useEffect(() => {
-    dispatch(getDrinks());
-    // eslint-disable-next-line
-  }, []);
-
-  const drink = drinks.find((drink) => drink.id === parseInt(id));
-
-  const [meDrink, setMeDrink] = useState({
-    id: drink.id,
-    name: drink.name,
-    preparation: drink.preparation,
-    measures: drink.measures,
-    ingredients: drink.ingredients,
-    image: null,
-    category: drink.category,
-    alcoholic: drink.alcoholic,
-    glass: drink.glass,
-    likes: drink.likes,
-    userId: user?.id
-  });
+    return drinkCurrent
+      ? drinkCurrent
+      : JSON.parse(localStorage.getItem("drink"));
+  };
 
   const [measureQuantity, setMeasureQuantity] = useState("");
   const [measureType, setMeasureType] = useState("");
@@ -75,6 +59,46 @@ const EditDrink = () => {
     id: 0,
     status: false,
     message: "",
+  });
+
+    //si esta en el local storage se recupera si no se pone null
+    const [drink, setDrink] = useState(localStorageDrink());
+
+    useEffect(() => {
+  
+      if(!localStorage.getItem("drink")){
+        //obtener todos los drinks
+        dispatch(getDrinks());
+  
+        //filtrar para obtener la bebida actual
+        const tempDrink = drinks.find((drink) => drink.id === parseInt(id));
+  
+        setDrink({ ...tempDrink });
+        setCurrentDrink({ data: tempDrink });
+        console.log(tempDrink);
+      }
+  
+      if (!id) {
+        //si no existe el id o usuario
+        navigate("/list-drinks");
+      }
+  
+      // eslint-disable-next-line
+    }, []);
+
+  const [meDrink, setMeDrink] = useState({
+    id: drink.id,
+    name: drink.name,
+    preparation: drink.preparation,
+    measures: drink.measures,
+    ingredients: drink.ingredients,
+    image: null,
+    ruta: drink.ruta,
+    category: drink.category,
+    alcoholic: drink.alcoholic,
+    glass: drink.glass,
+    likes: drink.likes,
+    userId: user?.id
   });
 
   const handleValidateItem = () => {
@@ -169,8 +193,6 @@ const EditDrink = () => {
     if (handleValidateSubmit()) {
       return;
     }
-
-    console.log(meDrink);
 
     //consultar a backend
     dispatch(updateDrink({data: meDrink}));
@@ -602,7 +624,7 @@ const EditDrink = () => {
                     !meDrink.image && (
                       <div className="d-flex justify-content-center">
                         <img
-                          src={drink.image}
+                          src={drink.ruta}
                           className="img-fluid rounded-1"
                           width={200}
                           height={200}

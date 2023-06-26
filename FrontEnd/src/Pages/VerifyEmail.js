@@ -38,7 +38,7 @@ const VerifyEmail = () => {
       email: u,
       activationNumber: c,
     }
-    console.log(data)
+ 
     dispatch(
       activateUser({data})
     );

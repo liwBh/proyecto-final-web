@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Entidades\Enum\EnumTipo.cs" />
     <Compile Include="Entidades\Mapeo\Bebida.cs" />
+    <Compile Include="Entidades\Mapeo\ImageData.cs" />
     <Compile Include="Entidades\Mapeo\Usuario.cs" />
     <Compile Include="Entidades\Request\ReqActivarUsuario.cs" />
     <Compile Include="Entidades\Request\ReqActualizarBebida.cs" />

@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   //protecion de la ruta
   usePrivateRoute();
+  
   //obtener el usuario
   const { user } = useSelector((state) => state.auth);
 

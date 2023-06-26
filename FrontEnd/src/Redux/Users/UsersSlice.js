@@ -133,12 +133,8 @@ const usersSlice = createSlice({
       if (action.payload.result) {
         //si no hay errores
         state.message = "Account updated successfully";
-      } else {
-        let error = "";
-        if (action.payload.errors > 0) {
-          error = "Failed to update account";
-        }
-        state.errorRedux = error;
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
+        state.errorRedux = "Failed to update account";
       }
 
       state.loading = false;
@@ -156,12 +152,9 @@ const usersSlice = createSlice({
       if (action.payload.result) {
         //si no hay errores
         state.message = "Account deleted successfully";
-      } else {
-        let error = "";
-        if (action.payload.errors > 0) {
-          error = "Failed to delete account";
-        }
-        state.errorRedux = error;
+        
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
+        state.errorRedux = "Failed to delete account";
       }
 
       state.loading = false;

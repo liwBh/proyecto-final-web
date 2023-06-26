@@ -1,12 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
 export const createDrink = createAsyncThunk(
   "drinks/createDrink",
 
   async ({ data }) => {
-    console.log(data);
-    console.log(JSON.stringify(data))
     const response = await fetch(
       "https://localhost:44328/api/Bebida/ingresarBebida",
       {
@@ -17,7 +14,6 @@ export const createDrink = createAsyncThunk(
         body: JSON.stringify({
           laBebida: {
             ...data,
-            "image": "https://picsum.photos/800/800",//temporal
           },
         }),
       }
@@ -31,20 +27,18 @@ export const setLikeDrink = createAsyncThunk(
   "drinks/setLikeDrink",
 
   async ({ data }) => {
+    console.log(data);
     const response = await fetch(
-      "https://localhost:44328/api/favorito/ingresarFavorito",
+      "https://localhost:44328/api/Bebida/vincularFavorito",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          laBebida: {
-            nombre: data.name,
-            apellidos: data.lastName,
-            correoElectronico: data.email,
-            password: data.password,
-          },
+          idUsuario: data.idUser,
+          idBebida: data.idDrink,
+          session: data.token,
         }),
       }
     );
@@ -56,8 +50,6 @@ export const setLikeDrink = createAsyncThunk(
 export const getDrinks = createAsyncThunk("drinks/getDrinks", async () => {
   const res = await fetch("https://localhost:44328/api/Bebida/");
   const data = await res.json();
-
-  /* console.log(data); */
 
   return data;
 });
@@ -77,7 +69,6 @@ export const updateDrink = createAsyncThunk(
         body: JSON.stringify({
           laBebida: {
             ...data,
-            "image": "https://picsum.photos/800/800",//temporal
           },
         }),
       }
@@ -91,6 +82,7 @@ export const deleteDrink = createAsyncThunk(
   "drinks/deleteDrink",
 
   async ({ data }) => {
+    console.log(data)
     const response = await fetch(
       "https://localhost:44328/api/Bebida/eliminarBebida",
       {
@@ -100,7 +92,7 @@ export const deleteDrink = createAsyncThunk(
         },
         body: JSON.stringify({
           laBebida: {
-            id: data
+            id: data,
           },
         }),
       }
@@ -118,10 +110,36 @@ export const clearState = createAsyncThunk("drinks/clearState", () => {
   };
 });
 
+export const setCurrentDrink = createAsyncThunk(
+  "drinks/setCurrentDrink",
+  ({ data }) => {
+    console.log(data);
+    //almacenar en localstorage
+    localStorage.setItem("drink", JSON.stringify(data));
+
+    return {
+      drink: data,
+    };
+  }
+);
+
+export const getCurrentDrink = createAsyncThunk(
+  "drinks/getCurrentDrink",
+  () => {
+    //recuperar del localstorage
+    const drinkLocalStorage = localStorage.getItem("drink");
+    const drinkCurrent = JSON.parse(drinkLocalStorage);
+
+    return {
+      drink: drinkCurrent,
+    };
+  }
+);
+
 const drinkSlice = createSlice({
   name: "drinks",
   initialState: {
-    drink: null,
+    drinkCurrent: null,
     drinks: [],
     loading: false,
     errorRedux: null,
@@ -138,9 +156,7 @@ const drinkSlice = createSlice({
       if (action.payload.result) {
         //si no hay errores
         state.drinks = action.payload.ListaDeBebidas;
-      }
-
-      if (action.payload.errors > 0 || !action.payload.result) {
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
         //si hay errores
         state.errorRedux = "Failure to get the drinks";
       }
@@ -157,16 +173,11 @@ const drinkSlice = createSlice({
       state.loading = true;
     },
     [createDrink.fulfilled]: (state, action) => {
-      /* console.log(action.payload); */
       if (action.payload.result) {
         //si no hay errores
         state.message = "Drink successfully registered";
-      } else {
-        let error = "";
-        if (action.payload.errors[0] > 0 || !action.payload.result) {
-          error = "Failed to register drink";
-        }
-        state.errorRedux = error;
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
+        state.errorRedux = "Failed to register drink";
       }
 
       state.loading = false;
@@ -178,18 +189,18 @@ const drinkSlice = createSlice({
 
     //consulta para dar like a bebida
     [setLikeDrink.pending]: (state, action) => {
-      state.loading = true;
+      state.loading = false;
     },
     [setLikeDrink.fulfilled]: (state, action) => {
       if (action.payload.result) {
-        //si no hay errores
+        //no tiene un like activo, se agrega
         state.message = "Added likes to the drink";
+      } else if (!action.payload.result && action.payload.errors.length === 0) {
+        //tiene un like activo, se elimina
+        state.message = "removed likes to the drink";
       } else {
-        let error = "";
-        if (action.payload.errors[0] > 0 || !action.payload.result) {
-          error = "Failed to like drink";
-        }
-        state.errorRedux = error;
+        //ocurrio un error
+        state.errorRedux = "Failed to like drink";
       }
 
       state.loading = false;
@@ -204,16 +215,12 @@ const drinkSlice = createSlice({
       state.loading = true;
     },
     [deleteDrink.fulfilled]: (state, action) => {
+      console.log(action.payload)
       if (action.payload.result) {
         //si no hay errores
         state.message = "Drink successfully deleted";
-        console.log("entro!!")
-      } else {
-        let error = "";
-        if (action.payload.errors > 0 || !action.payload.result) {
-          error = "Failed to delete drink";
-        }
-        state.errorRedux = error;
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
+        state.errorRedux = "Failed to delete drink";
       }
 
       state.loading = false;
@@ -230,12 +237,8 @@ const drinkSlice = createSlice({
       if (action.payload.result) {
         //si no hay errores
         state.message = "Drink successfully updated";
-      } else {
-        let error = "";
-        if (action.payload.errors > 0 || !action.payload.result) {
-          error = "Failed to update drink";
-        }
-        state.errorRedux = error;
+      } else if (action.payload.errors.length > 0 || !action.payload.result) {
+        state.errorRedux = "Failed to update drink";
       }
 
       state.loading = false;
@@ -250,6 +253,18 @@ const drinkSlice = createSlice({
       state.loading = action.payload.loading;
       state.errorRedux = action.payload.errorRedux;
       state.message = action.payload.message;
+    },
+
+    //bebida actual, detailsDrink
+    [setCurrentDrink.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.drinkCurrent = action.payload.drink;
+      state.loading = false;
+    },
+    [getCurrentDrink.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.drinkCurrent = action.payload.drink;
+      state.loading = false;
     },
   },
 });

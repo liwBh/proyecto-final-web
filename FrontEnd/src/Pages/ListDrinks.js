@@ -8,7 +8,7 @@ import Spinner from "../Components/Spinner";
 import {
   SweetAlertError,
 } from "../SweetAlert/SweetAlert";
-import { getDrinks, clearState } from "../Redux/Drinks/DrinkSlice";
+import { getDrinks, clearState, setCurrentDrink } from "../Redux/Drinks/DrinkSlice";
 
 const Coktails = () => {
   usePrivateRoute();
@@ -23,14 +23,13 @@ const Coktails = () => {
 
   useEffect(() => {
     dispatch(getDrinks());
+    dispatch( setCurrentDrink({ data: null }) );
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => { 
     setListDrinks([...drinks])
   }, [drinks]);
-
-  console.log(drinks)
 
   useEffect(() => {
     // si hay error

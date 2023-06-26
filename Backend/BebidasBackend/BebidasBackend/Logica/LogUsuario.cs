@@ -12,6 +12,7 @@ namespace BebidasBackend.Logica
 {
 	public class LogUsuario
 	{
+		public static string connection = "Data Source=LiwBH-pc\\SQLEXPRESS;Initial Catalog=bdbebidas;Integrated Security=True";
 		public ResIngresarUsuario ingresarUsuario(ReqIngresarUsuario req) {
 			ResIngresarUsuario res = new ResIngresarUsuario();
 			res.errors = new List<string>();
@@ -69,7 +70,7 @@ namespace BebidasBackend.Logica
 
 						string strNewPass = Utilitarios.Encrypt(req.elUsuario.password, "sarapiquiUNA2023");
 
-						conexionbdDataContext miLinq = new conexionbdDataContext();
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
                         miLinq.SP_INGRESAR_USUARIO(req.elUsuario.nombre, req.elUsuario.apellidos, req.elUsuario.correoElectronico, strNewPass, strNumeroVerificacion, ref idReturn, ref idError, ref errorBD);
 						
 						if (idError == 0)
@@ -147,7 +148,7 @@ namespace BebidasBackend.Logica
 						int? cantFilasAfectadas = 0;
 						string errorBD = "";
 
-						conexionbdDataContext miLinq = new conexionbdDataContext();
+						conexionbdDataContext miLinq = new conexionbdDataContext(connection);
                         miLinq.SP_ACTIVAR_USUARIO(req.correoElectronico, req.numeroDeActivacion, ref idReturn, ref idError, ref errorBD, ref cantFilasAfectadas);
 				
 						if (idError == 0)
@@ -219,7 +220,7 @@ namespace BebidasBackend.Logica
                         string nombre = "";
 						string apellidos = "";
 						
-                        conexionbdDataContext miLinq = new conexionbdDataContext();
+                        conexionbdDataContext miLinq = new conexionbdDataContext(connection);
                         miLinq.sp_Login(req.elUsuario.correoElectronico, strNewPass, ref idDelUsuario, ref estado, ref nombre, ref apellidos);
 
 						if (idDelUsuario != 0) //¿El usuario existe?
@@ -228,10 +229,7 @@ namespace BebidasBackend.Logica
 
                             if (estado == 1) // El usuario encontrado ¿está autenticado?
                             {
-                                //Si. El usuario encontrado si está autenticado
-                                //List<SP_OBTENER_FAVORITOS_USUARIOResult> listaDeLinq = new List<SP_OBTENER_FAVORITOS_USUARIOResult>();
-                                //listaDeLinq = miLinq.SP_OBTENER_FAVORITOS_USUARIO(idDelUsuario).ToList();
-
+  
                                 res.elUsuario = new Usuario();
                                 res.elUsuario.id = (int)idDelUsuario;
                                 res.elUsuario.nombre = nombre;
@@ -274,30 +272,6 @@ namespace BebidasBackend.Logica
 			return res;
 
         }
-
-        /* private List<Bebida> crearListaDeFavoritos(List<SP_OBTENER_FAVORITOS_USUARIOResult> listaDeLinq)
-         {
-             List<Bebida> listaArmada = new List<Bebida>();
-             foreach (SP_OBTENER_FAVORITOS_USUARIOResult tipoComplejo in listaDeLinq)
-             {
-                 listaArmada.Add(this.crearFavorito(tipoComplejo));
-             }
-             return listaArmada;
-         }*/
-
-        /*private Bebida crearFavorito(SP_OBTENER_FAVORITOS_USUARIOResult unTipoComplejo)
-        {
-            Bebida unaBebida = new Bebida();
-            unaBebida.id = (int)unTipoComplejo.id;
-            unaBebida.nombre = unTipoComplejo.nombre;
-            unaBebida.preparacion = unTipoComplejo.preparacion;
-            unaBebida.tipoalcohol = unTipoComplejo.tipoalcohol;
-            unaBebida.vaso = unTipoComplejo.vaso;
-            unaBebida.categoria = unTipoComplejo.categoria;
-            
-            return unaBebida;
-        }
-        */
         public ResActualizarUsuario actualizarUsuario(ReqActualizarUsuario req)
         {
             ResActualizarUsuario res = new ResActualizarUsuario();
@@ -353,7 +327,7 @@ namespace BebidasBackend.Logica
                         int? idError = 0;
                         string errorBD = "";
                         string strNewPass = Utilitarios.Encrypt(req.elUsuario.password, "sarapiquiUNA2023");
-                        conexionbdDataContext miLinq = new conexionbdDataContext();
+                        conexionbdDataContext miLinq = new conexionbdDataContext(connection);
                         miLinq.SP_ACTUALIZAR_USUARIO(req.elUsuario.id, req.elUsuario.nombre, req.elUsuario.apellidos, req.elUsuario.correoElectronico, strNewPass, ref errorId, ref descripcionError);
                        
 
@@ -438,7 +412,7 @@ namespace BebidasBackend.Logica
                         int? idError = 0;
                         string errorBD = "";
 
-                        conexionbdDataContext miLinq = new conexionbdDataContext();
+                        conexionbdDataContext miLinq = new conexionbdDataContext(connection);
                         miLinq.SP_ELIMINAR_USUARIO(req.elUsuario.id, ref errorId, ref descripcionError);
                         
 
@@ -484,7 +458,7 @@ namespace BebidasBackend.Logica
 
         }
         private string abrirSesion(int idDeUsuario, string origen) {
-           conexionbdDataContext con = new conexionbdDataContext();
+           conexionbdDataContext con = new conexionbdDataContext(connection);
             Guid miGuid = Guid.NewGuid();
             int? returnBD = 0;
             int? errorIdBD = 0;

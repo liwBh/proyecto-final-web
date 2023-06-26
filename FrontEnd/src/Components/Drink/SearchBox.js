@@ -16,7 +16,7 @@ const SearchBox = ({ setListDrinks }) => {
   const [searchBy, setSearchBy] = useState(1);
 
   const handleFilter = (e) => {
-    console.log(e.target.value);
+    //console.log(e.target.value);
     const filter = parseInt(e.target.value);
     setSearchBy(filter);
 

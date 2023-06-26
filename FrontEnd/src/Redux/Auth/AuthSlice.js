@@ -4,7 +4,6 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
 
   async ({ data }) => {
-
     const response = await fetch("https://localhost:44328/api/Usuario/login", {
       method: "POST",
       headers: {
@@ -45,7 +44,6 @@ export const clearState = createAsyncThunk("auth/clearState", () => {
 });
 
 export const getLocalStorage = createAsyncThunk("auth/getLocalStorage", () => {
- 
   // Obtener la cadena de texto del Local Storage
   const objetoString = localStorage.getItem("user");
   const tokenString = localStorage.getItem("token");
@@ -53,31 +51,32 @@ export const getLocalStorage = createAsyncThunk("auth/getLocalStorage", () => {
   // Convertir la cadena de texto a un objeto utilizando JSON.parse
   const objetoRecuperado = JSON.parse(objetoString);
 
-
   return {
     user: objetoRecuperado,
     token: tokenString,
   };
 });
 
-export const upateDataUser = createAsyncThunk("auth/upateDataUser", ({data}) => {
- 
-  const user =  {
-    id: data.id,
-    nombre: data.name,
-    apellidos: data.lastName,
-    correoElectronico: data.email,
-    password: "",
-    confirmarPassword: "",
+export const upateDataUser = createAsyncThunk(
+  "auth/upateDataUser",
+  ({ data }) => {
+    const user = {
+      id: data.id,
+      nombre: data.name,
+      apellidos: data.lastName,
+      correoElectronico: data.email,
+      password: "",
+      confirmarPassword: "",
+    };
+
+    // Convertir el objeto a una cadena de texto utilizando JSON.stringify
+    const objetoString = JSON.stringify(user);
+    // Almacenar el objeto en el Local Storage
+    localStorage.setItem("user", objetoString);
+
+    return user;
   }
-
-  // Convertir el objeto a una cadena de texto utilizando JSON.stringify
-  const objetoString  = JSON.stringify(user);
-  // Almacenar el objeto en el Local Storage
-  localStorage.setItem("user", objetoString);
-
-  return user;
-});
+);
 
 export const activateUser = createAsyncThunk(
   "auth/activateUser",
@@ -117,10 +116,6 @@ export const recoveryPasswordUser = createAsyncThunk(
   }
 );
 
-//actualizar usuario
-
-//eliminar cuenta de usuario
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -139,10 +134,11 @@ const authSlice = createSlice({
       state.message = "";
     },
     [loginUser.fulfilled]: (state, action) => {
-      if (action.payload.result) {//si no hay errores
+      if (action.payload.result) {
+        //si no hay errores
 
         // Convertir el objeto a una cadena de texto utilizando JSON.stringify
-        const objetoString  = JSON.stringify(action.payload.elUsuario);
+        const objetoString = JSON.stringify(action.payload.elUsuario);
         // Almacenar el objeto en el Local Storage
         localStorage.setItem("user", objetoString);
         localStorage.setItem("token", action.payload.session);
@@ -153,7 +149,7 @@ const authSlice = createSlice({
         state.token = action.payload.session;
       }
 
-      if (action.payload.errors > 0 || !action.payload.result) {
+      if (action.payload.errors.length > 0 || !action.payload.result) {
         //si hay errores
         state.errorRedux = "Failed to login";
       }
@@ -204,7 +200,7 @@ const authSlice = createSlice({
         state.message = "Account activated successfully";
       }
 
-      if (action.payload.errors > 0 || !action.payload.result) {
+      if (action.payload.errors.length > 0 || !action.payload.result) {
         //si hay errores
         state.errorRedux = "Account activation failed";
       }
@@ -222,7 +218,14 @@ const authSlice = createSlice({
     },
     [recoveryPasswordUser.fulfilled]: (state, action) => {
       state.loading = false;
-      state.message = "Sent a message to your email to recover your password";
+
+      if (action.payload.result) {
+        state.message = "Sent a message to your email to recover your password";
+      }
+      if (action.payload.errors.length > 0 || !action.payload.result) {
+        //si hay errores
+        state.errorRedux = "Account activation failed";
+      }
     },
     [recoveryPasswordUser.rejected]: (state, action) => {
       state.loading = false;
