@@ -75,7 +75,7 @@ const EditDrink = () => {
   
         setDrink({ ...tempDrink });
         setCurrentDrink({ data: tempDrink });
-        console.log(tempDrink);
+        /* console.log(tempDrink); */
       }
   
       if (!id) {

@@ -14,7 +14,7 @@ const useUser = () => {
     // eslint-disable-next-line
   }, []);
 
-  console.log("user", user)
+  /* console.log("user", user) */
 
   return user;
 };

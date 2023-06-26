@@ -59,7 +59,7 @@ const DetailsDrinks = () => {
 
       setDrink({ ...tempDrink });
       setCurrentDrink({ data: tempDrink });
-      console.log(tempDrink);
+      /* console.log(tempDrink); */
     }
 
     if (!id) {
@@ -71,7 +71,7 @@ const DetailsDrinks = () => {
   }, []);
 
 
-  console.log(drink);
+  /* console.log(drink); */
 
   useEffect(() => {
     // Verificar si drink.likes es null o undefined
@@ -165,7 +165,7 @@ const DetailsDrinks = () => {
       })
     );
 
-    console.log(drink.likes);
+    /* console.log(drink.likes); */
   };
 
   const handleDelete = () => {
@@ -196,7 +196,7 @@ const DetailsDrinks = () => {
 
   //si esta cargando
   if (loading || !drink || drink === null || drink === undefined) {
-    console.log("entro?");
+    /* console.log("entro?"); */
     return (
       <>
         <Layout>
