@@ -50,6 +50,7 @@ const ingredientsList = [
   "Carbonated water",
   "Cantaloupe",
   "Champagne",
+  "Cola drink",
   "Cherry brandy",
   "Chocolate",
   "Chocolate liqueur",
@@ -98,6 +99,7 @@ const ingredientsList = [
   "Lime juice",
   "Mango",
   "Milk",
+  "Mint",
   "Midori melon liqueur",
   "Ouzo",
   "Orange",
@@ -130,6 +132,7 @@ const ingredientsList = [
   "Vodka",
   "Water",
   "Watermelon",
+  "wears good",
   "Whiskey",
   "Yoghurt",
 ];

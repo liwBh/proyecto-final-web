@@ -67,6 +67,7 @@ namespace BebidasBackend.Logica
 						Random rdm = new Random();
 						int intNumeroVerificacion = rdm.Next();
 						string strNumeroVerificacion = Utilitarios.Encrypt(intNumeroVerificacion.ToString(), "sarapiquiUNA2023");
+						strNumeroVerificacion = strNumeroVerificacion.Replace("/", "-");
 
 						string strNewPass = Utilitarios.Encrypt(req.elUsuario.password, "sarapiquiUNA2023");
 
